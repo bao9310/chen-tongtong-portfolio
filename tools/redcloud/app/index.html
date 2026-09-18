@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>REDcloud 案例 · 让 AI 提效工具真正提效 — 陈彤彤 · 产品运营</title>
+<meta name="description" content="百度 REDcloud 产品运营实习案例：3 项体验优化闭环、商务页 PRD 改版（线索周增约 100 条）、618 定价策略、私域自动化（效率 +50%）、AB 测试。所有数据来自真实实习经历。" />
+
+<style>
+:root{
+  --ink:#0D1526; --ink-2:#131C30; --ink-3:#1A2740;
+  --paper:#F4F6F9; --paper-2:#EBEFF5; --white:#FFFFFF;
+  --line:#E2E8F1; --text:#182238; --muted:#5B6B85;
+  --accent:#E5454C; --accent-deep:#C93A41; --accent-soft:#FDEBEC;
+  --pos:#0E9F7E; --pos-soft:#E1F4EE; --warn:#E29A2E;
+  --on-dark:#DCE5F4; --on-muted:#8CA1C4;
+  --r-lg:18px; --r-md:13px; --shadow:0 1px 2px rgba(16,24,40,.05),0 10px 28px rgba(16,24,40,.06);
+  --font-num:"Space Grotesk","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;color:var(--text);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased}
+.num{font-family:var(--font-num);font-feature-settings:"tnum" 1;letter-spacing:-.01em}
+img,svg{display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+::selection{background:var(--accent-soft);color:var(--accent-deep)}
+
+.shell{max-width:1140px;margin:0 auto;padding:0 28px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--accent);letter-spacing:.06em}
+.eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.sec{padding:92px 0}
+.sec.alt{background:var(--white)}
+.sec.dark{background:var(--ink);color:#EAF0FA}
+.sec.dark .lede,.sec.dark .muted{color:var(--on-muted)}
+.head{max-width:780px;margin:0 auto 52px;text-align:center}
+.head h2{font-size:clamp(28px,3.6vw,40px);line-height:1.18;letter-spacing:-.02em;margin:14px 0 14px;font-weight:900;text-wrap:balance}
+.lede{font-size:15.5px;color:var(--muted);margin:0;max-width:640px;margin-left:auto;margin-right:auto}
+h3{font-weight:800;letter-spacing:-.01em}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;box-shadow:var(--shadow)}
+
+/* ===== Hero ===== */
+.hero{background:var(--ink);color:#F2F6FC;position:relative;overflow:hidden;padding-bottom:64px}
+.hero::before{content:"";position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(229,69,76,.20),rgba(229,69,76,0) 65%);right:-180px;top:-180px;pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.055) 1px,transparent 1px);background-size:26px 26px;pointer-events:none}
+nav{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:26px 0 0;position:relative;z-index:2}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:17px;letter-spacing:-.01em}
+.brand i{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px rgba(229,69,76,.8)}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap}
+.nav-links a{font-size:13px;color:var(--on-muted);text-decoration:none;padding:7px 11px;border-radius:9px;transition:color .2s,background .2s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:60px;align-items:center;padding:64px 0 0;position:relative;z-index:1}
+.hero-copy h1{font-size:clamp(34px,4.6vw,56px);line-height:1.1;letter-spacing:-.03em;margin:16px 0 20px;font-weight:900;text-wrap:balance}
+.hero-copy h1 em{font-style:normal;color:var(--accent)}
+.hero-copy .sub{font-size:16.5px;color:var(--on-muted);max-width:520px;margin:0;line-height:1.75}
+.hero-actions{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.btn{border:0;border-radius:11px;padding:13px 22px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .2s,background .2s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 8px 22px rgba(229,69,76,.35)}
+.btn.primary:hover{background:var(--accent-deep)}
+.btn.ghost{background:rgba(255,255,255,.06);color:#EAF0FA;border:1px solid rgba(255,255,255,.16)}
+.btn.ghost:hover{background:rgba(255,255,255,.12)}
+.btn.dark-ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn.dark-ghost:hover{background:var(--paper-2)}
+
+/* hero console */
+.console{background:linear-gradient(165deg,#151F36,#0E1626);border:1px solid rgba(255,255,255,.13);border-radius:22px;padding:24px;box-shadow:0 34px 90px rgba(3,8,20,.55);position:relative}
+.console::before{content:"";position:absolute;inset:0;border-radius:22px;background:radial-gradient(600px 220px at 85% -10%,rgba(229,69,76,.16),transparent 70%);pointer-events:none}
+.console-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.console-top b{font-size:14px;font-weight:800;color:#EAF0FA}
+.console-top span{font-size:11px;color:#7FE0BE;display:inline-flex;align-items:center;gap:6px}
+.console-top span::before{content:"";width:6px;height:6px;border-radius:50%;background:#35D29F;box-shadow:0 0 8px #35D29F}
+.console-sub{font-size:11.5px;color:var(--on-muted);margin:0 0 18px}
+.stage{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:center;padding:12px 13px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.035);cursor:pointer;transition:border-color .2s,background .2s;position:relative;z-index:1}
+.stage:hover{border-color:rgba(255,255,255,.22)}
+.stage.active{border-color:rgba(229,69,76,.75);background:rgba(229,69,76,.13)}
+.stage-ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.08);color:#AFC2E2}
+.stage.active .stage-ic{background:var(--accent);color:#fff}
+.stage-ic svg{width:19px;height:19px}
+.stage b{display:block;font-size:13.5px;color:#EFF4FC;line-height:1.35}
+.stage small{font-size:11px;color:var(--on-muted)}
+.connector{position:relative;height:22px;margin-left:29px}
+.connector::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:rgba(255,255,255,.13)}
+.connector i{position:absolute;left:-2.5px;top:0;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(229,69,76,.9);animation:flow 1.5s ease-in-out infinite}
+@keyframes flow{0%{top:0;opacity:0}25%{opacity:1}100%{top:calc(100% - 6px);opacity:0}}
+.console-detail{margin-top:16px;padding:14px 15px;border-radius:12px;background:rgba(229,69,76,.09);border:1px solid rgba(229,69,76,.28);font-size:12.5px;color:#DCE5F4;line-height:1.6;min-height:44px}
+
+/* ===== KPI metrics ===== */
+.metrics{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:-46px;padding-bottom:8px}
+.metric{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px 22px 20px;box-shadow:var(--shadow)}
+.metric .num{font-size:34px;font-weight:700;line-height:1.1;display:block;letter-spacing:-.02em}
+.metric .num i{font-style:normal;color:var(--accent)}
+.metric b.m-label{display:block;font-size:13.5px;font-weight:700;margin:6px 0 3px;color:var(--text)}
+.metric span{font-size:11.5px;color:var(--muted);display:block}
+
+/* ===== Context ===== */
+.ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.ctx-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;box-shadow:var(--shadow)}
+.ctx-card .k{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--accent)}
+.ctx-card .k svg{width:15px;height:15px}
+.ctx-card h3{font-size:19px;margin:12px 0 10px}
+.ctx-card p{font-size:14.5px;color:var(--muted);margin:0;line-height:1.8}
+.ctx-card p b{color:var(--text)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{padding:6px 12px;background:var(--paper);border:1px solid var(--line);border-radius:99px;font-size:12px;color:#43526C;font-weight:500}
+
+/* ===== Process ===== */
+.process{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.step{position:relative;background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px 20px;min-height:170px;box-shadow:var(--shadow)}
+.step .n{font-family:var(--font-num);font-size:12px;font-weight:700;color:var(--accent)}
+.step h3{font-size:16.5px;margin:16px 0 7px}
+.step p{font-size:12.5px;color:var(--muted);margin:0;line-height:1.7}
+.step:not(:last-child)::after{content:"";position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:13px;height:13px;border-top:2px solid #B7C4DA;border-right:2px solid #B7C4DA;transform:rotate(45deg);z-index:2;background:transparent}
+@media(min-width:1100px){.step:not(:last-child)::after{transform:translateY(-50%) rotate(45deg)}}
+
+/* ===== Fix cards ===== */
+.fix-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.fix{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
+.fix .ic{width:40px;height:40px;border-radius:11px;background:var(--accent-soft);color:var(--accent-deep);display:grid;place-items:center}
+.fix .ic svg{width:21px;height:21px}
+.fix h3{font-size:16.5px;margin:0}
+.fix .row{font-size:12.5px;line-height:1.65}
+.fix .row b{display:block;font-size:11px;letter-spacing:.05em;color:var(--accent);margin-bottom:3px}
+.fix .row p{margin:0;color:var(--muted)}
+.fix .ok{margin-top:auto;padding:11px 13px;background:var(--pos-soft);border-radius:11px;font-size:12.5px;color:#0B7A5F;line-height:1.55}
+.fix .ok b{display:block;font-size:11px;letter-spacing:.05em;color:var(--pos);margin-bottom:2px}
+
+/* ===== Charts ===== */
+.chart-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:24px 24px 18px}
+.chart-card.dark{background:var(--ink-2);border-color:rgba(255,255,255,.1)}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.chart-head b{font-size:15px;font-weight:800}
+.chart-head span{font-size:11px;color:var(--muted);display:block;margin-top:3px}
+.chart-card.dark .chart-head b{color:#EAF0FA}
+.chart-card.dark .chart-head span{color:var(--on-muted)}
+.chart{width:100%;height:auto}
+.chart .g-label{font-size:11px;fill:var(--muted)}
+.chart .g-val{font-family:var(--font-num);font-size:11px;font-weight:600}
+.chart-card.dark .g-label{fill:#8CA1C4}
+.chart-card.dark .g-val{fill:#DCE5F4}
+.chart .v-line{stroke-dasharray:4 5;stroke:#C7D2E4}
+.chart-card.dark .v-line{stroke:#33415E}
+.bar{transform:scaleY(0);transform-origin:50% 100%;transition:transform .9s cubic-bezier(.22,1,.36,1)}
+.bar.on{transform:scaleY(1)}
+.bar.b-before{fill:#C2CCDF}
+.bar.b-after{fill:var(--accent)}
+.bar.b-after-2{fill:var(--pos)}
+.bar.b-warn{fill:var(--warn)}
+.chart.armed .bar{transform:scaleY(1)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.annotation{font-size:12.5px;line-height:1.7}
+
+/* ===== Growth ===== */
+.growth-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:stretch}
+.growth-story p{font-size:14.5px;color:var(--on-muted);line-height:1.85;margin:0 0 14px}
+.growth-story p b{color:#fff}
+.entry-list{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.entry{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px}
+.entry svg{width:17px;height:17px;color:#AFC2E2;flex:none;margin-top:2px}
+.entry b{display:block;font-size:13.5px;color:#EAF0FA}
+.entry span{font-size:12px;color:var(--on-muted)}
+.result-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.rc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:14px;padding:18px}
+.rc .num{font-size:27px;font-weight:700;color:#fff;display:block}
+.rc .num i{font-style:normal;color:#FF8A8F}
+.rc span{font-size:12px;color:var(--on-muted);display:block;margin-top:4px;line-height:1.55}
+
+/* ===== Strategy ===== */
+.strat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.strat{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;box-shadow:var(--shadow);position:relative}
+.strat .phase{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:99px}
+.strat .phase.g{color:var(--pos);background:var(--pos-soft)}
+.strat .phase.w{color:#A96E17;background:#FBF1DF}
+.strat h3{font-size:17px;margin:14px 0 8px}
+.strat h3 em{font-style:normal;color:var(--accent)}
+.strat p{font-size:13px;color:var(--muted);margin:0;line-height:1.75}
+.strat .arrow{position:absolute;right:-15px;top:50%;transform:translateY(-50%);color:#B7C4DA;font-size:16px;z-index:2}
+
+/* ===== Pipeline (interactive) ===== */
+.pipe{background:var(--ink-2);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:26px}
+.pipe-row{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:10px;align-items:stretch}
+.pipe-arrow{align-self:center;color:#55698F;font-size:18px;font-weight:700;text-align:center}
+.node{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:18px 12px;color:#EAF0FA;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s,transform .15s}
+.node:hover{border-color:rgba(255,255,255,.28)}
+.node:active{transform:scale(.98)}
+.node.active{border-color:var(--accent);background:rgba(229,69,76,.14);box-shadow:0 0 0 1px rgba(229,69,76,.4)}
+.node .n-ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.08);color:#AFC2E2}
+.node.active .n-ic{background:var(--accent);color:#fff}
+.node .n-ic svg{width:22px;height:22px}
+.node b{font-size:14.5px;font-weight:800}
+.node small{font-size:11px;color:var(--on-muted);line-height:1.5}
+.node.wide{flex-direction:row;justify-content:flex-start;gap:14px;text-align:left;margin-top:16px;border-style:dashed}
+.node.wide .n-ic{flex:none}
+.pipe-detail{margin-top:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:16px;padding:22px 24px;color:#DCE5F4;min-height:170px}
+.pd-k{font-size:15px;font-weight:800;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:9px}
+.pd-k::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.pipe-detail p{font-size:13.5px;line-height:1.8;margin:0 0 12px;color:#B9C8E2}
+.pipe-detail ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.pipe-detail li{font-size:12px;background:rgba(229,69,76,.12);border:1px solid rgba(229,69,76,.3);color:#FFC6C9;padding:7px 12px;border-radius:99px}
+
+/* ===== Reflection ===== */
+.ref-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ref{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow)}
+.ref .ic{width:40px;height:40px;border-radius:11px;background:var(--accent-soft);color:var(--accent-deep);display:grid;place-items:center;margin-bottom:14px}
+.ref .ic svg{width:21px;height:21px}
+.ref h3{font-size:15.5px;margin:0 0 8px}
+.ref p{font-size:12.5px;color:var(--muted);margin:0;line-height:1.7}
+.rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.rel{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px}
+.rel .k{font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--accent);margin-bottom:7px}
+.rel h4{font-size:14.5px;margin:0 0 7px;color:var(--text)}
+.rel p{font-size:12.5px;color:var(--muted);margin:0;line-height:1.7}
+.rel b{color:var(--text);font-weight:700}
+
+/* ===== Outro / footer ===== */
+.outro{background:var(--ink);color:#F2F6FC;text-align:center;padding:100px 0 70px;position:relative;overflow:hidden}
+.outro::before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(229,69,76,.16),transparent 65%);left:50%;top:-260px;transform:translateX(-50%);pointer-events:none}
+.outro h2{font-size:clamp(28px,4vw,44px);letter-spacing:-.02em;margin:14px 0 16px;font-weight:900;position:relative}
+.outro p{color:var(--on-muted);max-width:560px;margin:0 auto 30px;font-size:14.5px;line-height:1.8;position:relative}
+.note{font-size:11.5px;color:#6E83A6;margin-top:34px;line-height:1.7;position:relative}
+.footer{background:#0A1120;color:#6E83A6;padding:20px 0;border-top:1px solid rgba(255,255,255,.08);font-size:12px;text-align:center}
+
+/* ===== Reveal ===== */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.on{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+
+/* ===== Responsive ===== */
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:44px;padding-top:48px}
+  .metrics{grid-template-columns:repeat(2,1fr);margin-top:-30px}
+  .process{grid-template-columns:repeat(2,1fr)}
+  .step::after{display:none}
+  .fix-grid,.strat-grid,.ref-grid,.rel-grid{grid-template-columns:repeat(2,1fr)}
+  .ctx-grid,.growth-grid{grid-template-columns:1fr}
+  .result-cards{grid-template-columns:repeat(3,1fr)}
+  .pipe-row{grid-template-columns:1fr;gap:8px}
+  .pipe-arrow{transform:rotate(90deg);justify-self:center}
+}
+@media(max-width:640px){
+  .shell{padding:0 18px}
+  .sec{padding:66px 0}
+  .nav-links{display:none}
+  .metrics{grid-template-columns:repeat(2,1fr);gap:10px}
+  .metric{padding:16px}
+  .metric .num{font-size:26px}
+  .process{grid-template-columns:1fr}
+  .fix-grid,.strat-grid,.ref-grid,.rel-grid{grid-template-columns:1fr}
+  .result-cards{grid-template-columns:1fr}
+  .hero-actions .btn{flex:1;text-align:center}
+  .strat .arrow{display:none}
+  .pipe-detail{min-height:0}
+  .pipe-detail ul{flex-direction:column}
+  .console-detail{min-height:0}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .reveal{opacity:1;transform:none}
+  .bar{transform:scaleY(1)}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="shell">
+    <nav>
+      <div class="brand"><i></i>REDcloud · 案例</div>
+      <div class="nav-links">
+        <a href="#context">案例背景</a>
+        <a href="#fixes">体验优化</a>
+        <a href="#growth">商务增长</a>
+        <a href="#pricing">618 策略</a>
+        <a href="#automation">私域自动化</a>
+        <a href="#abtest">AB 测试</a>
+      </div>
+    </nav>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">百度 REDcloud · 产品运营实习案例 · 2026</div>
+        <h1>让 AI 提效工具，<em>真正提效</em></h1>
+        <p class="sub">作为产品体验官兼产品运营，我把版本测试里发现的 3 个高频问题推进落地，用一次商务页 PRD 改版把每周线索推高约 100 条，再用一条私域自动化链路把运营效率提升约 50%。</p>
+        <div class="hero-actions">
+          <button class="btn primary" onclick="document.querySelector('#growth').scrollIntoView()">看数据表现</button>
+          <button class="btn ghost" onclick="document.querySelector('#context').scrollIntoView()">读案例逻辑</button>
+        </div>
+      </div>
+      <div class="console" role="region" aria-label="自动化运营链路示意">
+        <div class="console-top"><b>自动化运营链路</b><span>模拟运行中</span></div>
+        <p class="console-sub">公域引流 → 私域承接 → AI 应答 → 人工兜底，一条链路串起提效闭环。点击节点查看说明。</p>
+        <div class="stage" data-stage="traffic" tabindex="0"><div class="stage-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="2"/><path d="M8.8 8.8a4.5 4.5 0 0 0 0 6.4M15.2 8.8a4.5 4.5 0 0 1 0 6.4M6.4 6.4a8 8 0 0 0 0 11.2M17.6 6.4a8 8 0 0 1 0 11.2"/></svg></div><div><b>公域引流</b><small>TikTok / Ins / FB 内容分发，评论与私信引导进入私域</small></div></div>
+        <div class="connector"><i></i></div>
+        <div class="stage" data-stage="private" tabindex="0"><div class="stage-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16l-6.2 8v4.5L9.8 19v-6z"/><path d="M8.5 8.5h7"/></svg></div><div><b>私域承接</b><small>统一承接入口，用户来源与画像自动打标</small></div></div>
+        <div class="connector"><i></i></div>
+        <div class="stage active" data-stage="bot" tabindex="0"><div class="stage-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="3"/><circle cx="9.2" cy="13" r="1"/><circle cx="14.8" cy="13" r="1"/><path d="M12 8V5.5M9.2 3.5h5.6"/></svg></div><div><b>AI 自动应答</b><small>预置 FAQ 知识库自动回复，疑难问题自动标记</small></div></div>
+        <div class="connector"><i></i></div>
+        <div class="stage" data-stage="human" tabindex="0"><div class="stage-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3.5 19c.8-3 2.8-4.5 5.5-4.5s4.7 1.5 5.5 4.5"/><path d="M15.5 12.2l2 2 3.5-4"/></svg></div><div><b>人工兜底</b><small>被标记的疑难问题由人工补充处理，保障体验下限</small></div></div>
+        <div class="console-detail" id="consoleDetail">AI 自动应答：高频问题由 AI bot 秒回，疑难问题自动标记转人工，客服压力大幅下降。</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="shell">
+  <div class="metrics">
+    <div class="metric"><span class="num" data-target="3" data-format="plain">0</span><b class="m-label">体验问题闭环落地</b><span>版本测试中发现，推动研发修复并验证</span></div>
+    <div class="metric"><span class="num" data-target="100" data-format="plus">0</span><b class="m-label">商务线索增量 · 条 / 周</b><span>PRD 改版后，周增约 100 条</span></div>
+    <div class="metric"><span class="num" data-target="10000" data-format="wan">0</span><b class="m-label">助力产品加售</b><span>改版与活动协同，加售约 1 万台</span></div>
+    <div class="metric"><span class="num" data-target="50" data-format="percent">0</span><b class="m-label">私域运营效率提升</b><span>AI bot + FAQ + 内容工作流</span></div>
+  </div>
+</div>
+<!-- ===== 案例背景 ===== -->
+<section class="sec" id="context">
+  <div class="shell">
+    <div class="head">
+      <div class="eyebrow">案例背景 · CONTEXT</div>
+      <h2>我在做什么，工具是什么</h2>
+      <p class="lede">一次三个月的实习，角色是「产品体验官 + 产品运营」：既要把工具用出问题清单，也要把问题做成增长。</p>
+    </div>
+    <div class="ctx-grid">
+      <div class="ctx-card">
+        <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>工具 · REDcloud</div>
+        <h3>出海社媒运营的 AI 提效工具</h3>
+        <p>面向跨境电商团队的社媒运营工具：<b>云机</b>承载 TikTok 等多平台账号，<b>自动化工具</b>批量执行运营任务，<b>AI</b> 辅助内容生产与客户承接。团队目标很直接——用更少的人力，覆盖更多平台与账号。</p>
+        <div class="chips">
+          <span class="chip">云机多账号</span>
+          <span class="chip">TikTok 自动化</span>
+          <span class="chip">AI 内容生产</span>
+          <span class="chip">出海电商场景</span>
+        </div>
+      </div>
+      <div class="ctx-card">
+        <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9.5 13h5M9.5 16.5h5"/></svg>我的角色</div>
+        <h3>产品运营实习生 · 兼任产品体验官</h3>
+        <p>2026.05 – 2026.08，负责 REDcloud 与自动化 TikTok 工具的<b>版本测试与问题闭环</b>；独立撰写商务页 <b>PRD</b> 并推动上线；参与 <b>618 定价策略</b>；搭建<b>私域自动化链路</b>；用 <b>AB 测试</b>校准素材与人力策略。</p>
+        <div class="chips">
+          <span class="chip">版本测试与验收</span>
+          <span class="chip">PRD 撰写与推进</span>
+          <span class="chip">商务增长</span>
+          <span class="chip">618 定价策略</span>
+          <span class="chip">私域自动化</span>
+          <span class="chip">AB 测试</span>
+          <span class="chip">竞品调研</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 体验优化闭环 ===== -->
+<section class="sec alt" id="fixes">
+  <div class="shell">
+    <div class="head">
+      <div class="eyebrow">体验优化 · FIXES</div>
+      <h2>从测试账号里，捞回 3 个高频问题</h2>
+      <p class="lede">产品体验官的工作不是挑毛病，而是把毛病变成可验证的改进：发现问题、定位归因、推动落地、数据验证，一次闭环。</p>
+    </div>
+    <div class="process">
+      <article class="step"><div class="n">01</div><h3>发现问题</h3><p>版本测试 + 用户客诉，把零散反馈收敛成可复现的问题清单。</p></article>
+      <article class="step"><div class="n">02</div><h3>定位归因</h3><p>复现路径、确认根因，区分产品、配置与使用引导问题。</p></article>
+      <article class="step"><div class="n">03</div><h3>推动落地</h3><p>反馈研发定位修复，或写成 PRD 推动排期上线。</p></article>
+      <article class="step"><div class="n">04</div><h3>数据验证</h3><p>回到测试账号流量与客诉反馈，验证优化是否生效。</p></article>
+    </div>
+    <div class="fix-grid" style="margin-top:22px">
+      <article class="fix">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 6.4L21 9.2l-5 4.1 1.7 6.5L12 16.2 6.3 19.8 8 13.3 3 9.2l6.8.2z"/></svg></div>
+        <h3>国际化 BUG：英文版残留中文</h3>
+        <div class="row"><b>问题</b><p>英文版本地化不彻底，残留中文文案，影响海外用户对工具专业度的信任。</p></div>
+        <div class="row"><b>动作</b><p>测试中发现并推动修复，补充语言一致性检查，覆盖多语言版本回归。</p></div>
+        <div class="ok"><b>影响</b>英文版文案恢复统一，海外使用体验修复。</div>
+      </article>
+      <article class="fix">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 11h18M8 6V4.5M16 6V4.5"/><path d="M12 14.5v2M9.8 16.3l.2.2"/></svg></div>
+        <h3>云机使用提示缺失：需全局 VPN</h3>
+        <div class="row"><b>问题</b><p>云机依赖全局 VPN 才能稳定运行，但产品没有任何使用提示，新用户配置失败率高。</p></div>
+        <div class="row"><b>动作</b><p>补齐「需全局 VPN」的使用提示与引导说明，提前拦截高频配置错误。</p></div>
+        <div class="ok"><b>影响</b>新用户相关客诉明显下降。</div>
+      </article>
+      <article class="fix">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="11" rx="2.5"/><path d="M7 8V6.5a5 5 0 0 1 10 0V8"/><path d="M12 12v3.5"/><circle cx="12" cy="16.8" r=".4" fill="currentColor"/></svg></div>
+        <h3>滑块验证登录失败与标签丢失</h3>
+        <div class="row"><b>问题</b><p>自动化工具执行时滑块验证登录失败、标签偶发丢失，导致任务中断。</p></div>
+        <div class="row"><b>动作</b><p>测试中复现并反馈研发，定位登录态与标签持久化链路，推动修复。</p></div>
+        <div class="ok"><b>影响</b>自动化任务恢复稳定运行，中断率下降。</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 商务增长：PRD 改版 ===== -->
+<section class="sec dark" id="growth">
+  <div class="shell">
+    <div class="head">
+      <div class="eyebrow" style="color:#FF8A8F">商务增长 · GROWTH</div>
+      <h2>一次 PRD 改版，把线索周增推高约 100 条</h2>
+      <p class="lede">产品缺少商务跳转入口，咨询与线索只能靠人工承接。我独立撰写 PRD，推动商务承接页面从 0 到 1。</p>
+    </div>
+    <div class="growth-grid">
+      <div class="growth-story">
+        <p>改版前，产品页没有<b>任何商务跳转入口</b>，潜在客户只能通过人工咨询触达，线索流失在最后一公里。</p>
+        <p>我独立撰写 PRD，推动上线<b>合作伙伴页面、商务联系与信息提交入口、首页 banner 广告位</b>，并统一产品视觉风格支撑新功能上线。</p>
+        <div class="entry-list">
+          <div class="entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11V4a1 1 0 0 1 1-1h7l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><div><b>首页 Banner 广告位</b><span>承接活动与商务信息，提高首屏转化触达</span></div></div>
+          <div class="entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11V4a1 1 0 0 1 1-1h7l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><div><b>合作伙伴页面</b><span>展示生态合作，拓展渠道线索来源</span></div></div>
+          <div class="entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11V4a1 1 0 0 1 1-1h7l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><div><b>商务联系 + 信息提交入口</b><span>低门槛留资，线索从人工咨询变为自助提交</span></div></div>
+        </div>
+      </div>
+      <div class="chart-card dark">
+        <div class="chart-head"><div><b>改版前后 · 每周商务线索</b><span>单位：条 / 周 · 示意数据，基于「周增约 100 条」口径</span></div></div>
+        <svg class="chart" id="leadsChart" viewBox="0 0 560 230" role="img" aria-label="改版前后每周商务线索对比柱状图，示意数据">
+          <g class="g-label" font-size="11">
+            <text x="34" y="193">0</text><text x="28" y="114">60</text><text x="22" y="36">120</text>
+          </g>
+          <line x1="42" y1="190" x2="470" y2="190" stroke="#33415E"/>
+          <line class="v-line" x1="42" y1="111" x2="470" y2="111"/>
+          <line class="v-line" x1="42" y1="33" x2="470" y2="33"/>
+          <line x1="228" y1="28" x2="228" y2="190" stroke="#FF8A8F" stroke-width="1.5" stroke-dasharray="5 5"/>
+          <text x="238" y="24" class="g-label">商务页上线</text>
+          <g class="g-val" font-size="11">
+            <rect class="bar b-before" x="52" y="174" width="30" height="16" rx="3"><title>改版前第 1 周 · 12 条</title></rect>
+            <rect class="bar b-before" x="94" y="170" width="30" height="20" rx="3"><title>改版前第 2 周 · 15 条</title></rect>
+            <rect class="bar b-before" x="136" y="176" width="30" height="14" rx="3"><title>改版前第 3 周 · 11 条</title></rect>
+            <rect class="bar b-before" x="178" y="172" width="30" height="18" rx="3"><title>改版前第 4 周 · 14 条</title></rect>
+            <rect class="bar b-after" x="250" y="64" width="30" height="126" rx="3"><title>改版后第 1 周 · 96 条</title></rect>
+            <rect class="bar b-after" x="292" y="48" width="30" height="142" rx="3"><title>改版后第 2 周 · 108 条</title></rect>
+            <rect class="bar b-after" x="334" y="30" width="30" height="160" rx="3"><title>改版后第 3 周 · 122 条</title></rect>
+            <rect class="bar b-after" x="376" y="37" width="30" height="153" rx="3"><title>改版后第 4 周 · 117 条</title></rect>
+            <text x="52" y="168" class="g-label">12</text><text x="94" y="164" class="g-label">15</text><text x="136" y="170" class="g-label">11</text><text x="178" y="166" class="g-label">14</text>
+            <text x="250" y="58" class="g-val">96</text><text x="292" y="42" class="g-val">108</text><text x="334" y="24" class="g-val">122</text><text x="376" y="31" class="g-val">117</text>
+          </g>
+          <g class="g-label" font-size="11">
+            <text x="52" y="208">W1</text><text x="94" y="208">W2</text><text x="136" y="208">W3</text><text x="178" y="208">W4</text>
+            <text x="250" y="208">W1</text><text x="292" y="208">W2</text><text x="334" y="208">W3</text><text x="376" y="208">W4</text>
+          </g>
+          <g class="g-val" font-size="13" font-weight="700" fill="#FF8A8F">
+            <text x="430" y="60">+约100条/周</text>
+          </g>
+        </svg>
+        <div class="legend"><span><i style="background:#C2CCDF"></i>改版前（基线）</span><span><i style="background:#E5454C"></i>改版后（上线后 4 周）</span><span style="color:#8CA1C4">示意数据 · 不代表业务实际</span></div>
+      </div>
+    </div>
+    <div class="result-cards">
+      <div class="rc"><span class="num">+<i>100</i> 条/周</span><span>商务线索增量（简历口径：周增约 100 条）</span></div>
+      <div class="rc"><span class="num"><i>↑</i> 显著</span><span>合作与客户咨询显著增多</span></div>
+      <div class="rc"><span class="num">≈<i>1</i> 万台</span><span>助力产品加售（改版 + 活动协同）</span></div>
+    </div>
+  </div>
+</section>
+<!-- ===== 618 定价策略 ===== -->
+<section class="sec" id="pricing">
+  <div class="shell">
+    <div class="head">
+      <div class="eyebrow">定价策略 · 618</div>
+      <h2>分层承接，把流量做成交易</h2>
+      <p class="lede">持续调研 VMOS、Geelark 等竞品的功能、营销与价格动态，每周输出竞品动态，参与制定 618 分层促销策略。</p>
+    </div>
+    <div class="strat-grid">
+      <article class="strat">
+        <span class="phase">第一层 · 拉新</span>
+        <h3>9.9 元体验价</h3>
+        <p>用极低门槛降低决策成本，把「先看看」变成「先试试」，扩大活动期咨询量。</p>
+        <span class="arrow">→</span>
+      </article>
+      <article class="strat">
+        <span class="phase g">第二层 · 转化</span>
+        <h3>竞品迁移返利 + 老带新返利</h3>
+        <p>针对 VMOS、Geelark 等竞品用户做迁移返利，叠加老带新返利激活存量，双向扩量。</p>
+        <span class="arrow">→</span>
+      </article>
+      <article class="strat">
+        <span class="phase w">第三层 · 留存</span>
+        <h3>3 天免费试用 + 定制套餐</h3>
+        <p>免费试用承接大客户试用决策，定制套餐满足个性化需求，把活动流量转成长效留存。</p>
+      </article>
+    </div>
+    <div class="growth-grid" style="margin-top:22px">
+      <div class="chart-card">
+        <div class="chart-head"><div><b>活动期咨询量</b><span>指数（活动前 = 100）· 示意数据，基于「显著提升」口径</span></div></div>
+        <svg class="chart" id="actChart" viewBox="0 0 560 230" role="img" aria-label="618 活动前后咨询量对比柱状图，示意数据">
+          <g class="g-label" font-size="11">
+            <text x="28" y="193">0</text><text x="22" y="113">120</text><text x="22" y="34">240</text>
+          </g>
+          <line x1="42" y1="190" x2="470" y2="190" stroke="#C7D2E4"/>
+          <line class="v-line" x1="42" y1="107" x2="470" y2="107"/>
+          <line class="v-line" x1="42" y1="33" x2="470" y2="33"/>
+          <g class="g-val" font-size="11">
+            <rect class="bar b-before" x="110" y="123" width="78" height="67" rx="4"><title>活动前 · 100</title></rect>
+            <rect class="bar b-after" x="260" y="30" width="78" height="160" rx="4"><title>活动期 · 240（示意）</title></rect>
+            <text x="110" y="117" class="g-label">100</text><text x="260" y="24" class="g-val">240</text>
+          </g>
+          <g class="g-label" font-size="12">
+            <text x="115" y="210">活动前</text><text x="268" y="210">活动期 · 618</text>
+          </g>
+          <g class="g-val" font-size="13" font-weight="700" fill="#E5454C"><text x="392" y="60">↑ 显著提升</text></g>
+        </svg>
+        <div class="legend"><span><i style="background:#C2CCDF"></i>活动前</span><span><i style="background:#E5454C"></i>活动期</span><span>示意数据 · 不代表业务实际</span></div>
+      </div>
+      <div class="growth-story" style="color:var(--muted)">
+        <p style="color:var(--muted)">策略不是拍脑袋：每周固定输出<b>竞品功能、营销与价格动态</b>，让定价判断建立在 VMOS、Geelark 等竞品的最新动作之上。</p>
+        <p style="color:var(--muted)">三层策略对应三种用户动机——<b>新客尝鲜、竞品迁移、老客续费</b>，一条 618 活动线同时覆盖拉新、转化与留存。</p>
+        <div class="entry-list">
+          <div class="entry" style="background:var(--paper-2);border-color:var(--line)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:#43526C"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><div><b>结果</b><span>活动期咨询量与成交量显著提升</span></div></div>
+          <div class="entry" style="background:var(--paper-2);border-color:var(--line)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:#43526C"><path d="M5 19a8 8 0 1 1 14 0"/><path d="M12 11l4 4"/></svg><div><b>配套动作</b><span>每周竞品动态周会输出，支撑定价与话术调整</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 私域自动化 ===== -->
+<section class="sec dark" id="automation">
+  <div class="shell">
+    <div class="head">
+      <div class="eyebrow" style="color:#FF8A8F">私域自动化 · AUTOMATION</div>
+      <h2>一条链路，把运营效率提上去约 50%</h2>
+      <p class="lede">公域引流到私域承接，AI 自动应答高频问题、标记疑难转人工，另搭内容工作流自动生成视频文案与标签。点击链路节点查看每一环。</p>
+    </div>
+    <div class="pipe" role="group" aria-label="私域自动化链路，可点击节点查看说明">
+      <div class="pipe-row">
+        <button class="node" data-node="traffic"><span class="n-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="2"/><path d="M8.8 8.8a4.5 4.5 0 0 0 0 6.4M15.2 8.8a4.5 4.5 0 0 1 0 6.4M6.4 6.4a8 8 0 0 0 0 11.2M17.6 6.4a8 8 0 0 1 0 11.2"/></svg></span><b>公域引流</b><small>内容分发 · 评论私信引导</small></button>
+        <span class="pipe-arrow">→</span>
+        <button class="node" data-node="private"><span class="n-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16l-6.2 8v4.5L9.8 19v-6z"/><path d="M8.5 8.5h7"/></svg></span><b>私域承接</b><small>统一入口 · 来源打标</small></button>
+        <span class="pipe-arrow">→</span>
+        <button class="node active" data-node="bot"><span class="n-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="3"/><circle cx="9.2" cy="13" r="1"/><circle cx="14.8" cy="13" r="1"/><path d="M12 8V5.5M9.2 3.5h5.6"/></svg></span><b>AI 自动应答</b><small>FAQ 知识库 · 疑难标记</small></button>
+        <span class="pipe-arrow">→</span>
+        <button class="node" data-node="human"><span class="n-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3.5 19c.8-3 2.8-4.5 5.5-4.5s4.7 1.5 5.5 4.5"/><path d="M15.5 12.2l2 2 3.5-4"/></svg></span><b>人工兜底</b><small>疑难补充 · 质量保障</small></button>
+      </div>
+      <div class="pipe-side">
+        <button class="node wide" data-node="workflow"><span class="n-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></span><b>内容工作流</b><small>自动生成视频文案与标签 · 与应答链路并行</small></button>
+      </div>
+    </div>
+    <div class="pipe-detail" id="pipeDetail">
+      <div class="pd-k">AI 自动应答</div>
+      <p>预置 FAQ 知识库覆盖高频咨询，AI bot 自动回复并自动标记疑难问题，人工只处理被标记的少数疑难，客服人力大幅释放。</p>
+      <ul>
+        <li>高频问题自动秒回，响应时间趋近于 0</li>
+        <li>疑难问题自动标记，转人工补充处理</li>
+        <li>知识库持续沉淀，回复质量随使用递增</li>
+      </ul>
+    </div>
+    <div class="growth-grid" style="margin-top:26px">
+      <div class="chart-card dark">
+        <div class="chart-head"><div><b>运营效率 · 人力投入对比</b><span>指数（人工基线 = 100）· 示意数据，基于「效率提升约 50%」口径</span></div></div>
+        <svg class="chart" id="effChart" viewBox="0 0 560 230" role="img" aria-label="自动化前后人力投入对比柱状图，示意数据">
+          <g class="g-label" font-size="11">
+            <text x="28" y="193">0</text><text x="22" y="113">50</text><text x="22" y="34">100</text>
+          </g>
+          <line x1="42" y1="190" x2="470" y2="190" stroke="#33415E"/>
+          <line class="v-line" x1="42" y1="111" x2="470" y2="111"/>
+          <line class="v-line" x1="42" y1="33" x2="470" y2="33"/>
+          <g class="g-val" font-size="11">
+            <rect class="bar b-before" x="110" y="30" width="78" height="160" rx="4"><title>人工基线 · 100</title></rect>
+            <rect class="bar b-after-2" x="260" y="110" width="78" height="80" rx="4"><title>自动化后 · 50（示意）</title></rect>
+            <text x="110" y="24" class="g-val">100</text><text x="260" y="104" class="g-val">50</text>
+          </g>
+          <g class="g-label" font-size="12">
+            <text x="108" y="210">人工基线</text><text x="258" y="210">自动化后</text>
+          </g>
+          <g class="g-val" font-size="13" font-weight="700" fill="#35D29F"><text x="392" y="60">+50% 运营效率</text></g>
+        </svg>
+        <div class="legend"><span><i style="background:#C2CCDF"></i>人工基线</span><span><i style="background:#0E9F7E"></i>自动化后</span><span style="color:#8CA1C4">示意数据 · 不代表业务实际</span></div>
+      </div>
+      <div class="growth-story">
+        <p><b>提效来自两处：</b>高频咨询被 AI bot 自动消化，文案与标签由内容工作流自动生产——重复劳动交给机器，人力释放给疑难处理与策略判断。</p>
+        <p>整条链路从公域引流到私域承接闭环，每一条线索都带来源与画像标签，为后续运营动作提供数据基础。</p>
+        <div class="entry-list">
+          <div class="entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 5 4 8 7 13 3-5 7-8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg><div><b>承接对象</b><span>公域 → 私域，用户来源与画像自动打标</span></div></div>
+          <div class="entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><div><b>数据回流</b><span>客诉与问答沉淀进知识库，越用越准</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AB 测试 ===== -->
+<section class="sec alt" id="abtest">
+  <div class="shell">
+    <div class="head">
+      <div class="eyebrow">实验 · AB TEST</div>
+      <h2>素材 × 平台，找出「吃 AI」的地方</h2>
+      <p class="lede">纯 AI 素材与实拍素材、多平台分发 AB 测试，识别平台对 AI 内容的承接差异，用数据校准素材与人力策略。</p>
+    </div>
+    <div class="growth-grid">
+      <div class="chart-card">
+        <div class="chart-head"><div><b>素材表现 · 按平台对比</b><span>表现指数 0–100 · 示意数据，基于「FB/Ins 吃 AI、TikTok 排斥 AI」结论</span></div></div>
+        <svg class="chart" id="abChart" viewBox="0 0 560 230" role="img" aria-label="各平台 AI 素材与实拍素材表现对比，示意数据">
+          <g class="g-label" font-size="11">
+            <text x="28" y="193">0</text><text x="22" y="113">50</text><text x="22" y="34">100</text>
+          </g>
+          <line x1="42" y1="190" x2="470" y2="190" stroke="#C7D2E4"/>
+          <line class="v-line" x1="42" y1="111" x2="470" y2="111"/>
+          <line class="v-line" x1="42" y1="33" x2="470" y2="33"/>
+          <g class="g-val" font-size="10.5">
+            <rect class="bar b-after" x="92" y="52" width="30" height="138" rx="3"><title>Facebook · AI 素材 · 86</title></rect>
+            <rect class="bar b-after-2" x="130" y="91" width="30" height="99" rx="3"><title>Facebook · 实拍素材 · 62</title></rect>
+            <rect class="bar b-after" x="252" y="49" width="30" height="141" rx="3"><title>Instagram · AI 素材 · 88</title></rect>
+            <rect class="bar b-after-2" x="290" y="94" width="30" height="96" rx="3"><title>Instagram · 实拍素材 · 60</title></rect>
+            <rect class="bar b-warn" x="412" y="132" width="30" height="58" rx="3"><title>TikTok · AI 素材 · 36（排斥）</title></rect>
+            <rect class="bar b-after-2" x="450" y="56" width="30" height="134" rx="3"><title>TikTok · 实拍素材 · 84</title></rect>
+            <text x="92" y="46" class="g-val">86</text><text x="130" y="85" class="g-label">62</text>
+            <text x="252" y="43" class="g-val">88</text><text x="290" y="88" class="g-label">60</text>
+            <text x="412" y="126" class="g-val">36</text><text x="450" y="50" class="g-val">84</text>
+          </g>
+          <g class="g-label" font-size="12">
+            <text x="88" y="210">Facebook</text><text x="250" y="210">Instagram</text><text x="418" y="210">TikTok</text>
+          </g>
+        </svg>
+        <div class="legend"><span><i style="background:#E5454C"></i>AI 素材</span><span><i style="background:#0E9F7E"></i>实拍素材</span><span><i style="background:#E29A2E"></i>被限流（排斥）</span><span>示意数据 · 不代表业务实际</span></div>
+      </div>
+      <div class="growth-story" style="color:var(--muted)">
+        <p style="color:var(--muted)">结论清晰且反直觉：<b>FB / Ins 吃 AI 素材</b>，AI 内容表现明显更好；<b>TikTok 排斥纯 AI 素材</b>，实拍与授权素材更稳。</p>
+        <p style="color:var(--muted)">我把平台差异反馈给团队，推动调整<b>素材与人力策略</b>：AI 产线侧重 FB / Ins，TikTok 改用官方授权素材 + 生活化实拍。</p>
+        <div class="entry-list">
+          <div class="entry" style="background:var(--paper-2);border-color:var(--line)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:#43526C"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><div><b>实验设计</b><span>纯 AI vs 实拍 × 多平台分发，控制变量对比表现</span></div></div>
+          <div class="entry" style="background:var(--paper-2);border-color:var(--line)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:#43526C"><path d="M10 3h4M11 3v6l-6 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-6-9V3"/></svg><div><b>实验结论</b><span>先拿到平台差异，再投入素材与人力，避免资源错配</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===== 复盘沉淀 ===== -->
+<section class="sec" id="reflection">
+  <div class="shell">
+    <div class="head">
+      <div class="eyebrow">复盘沉淀 · TAKEAWAYS</div>
+      <h2>把一次实习，变成可复用的方法</h2>
+      <p class="lede">四条贯穿全程的工作方法，也是我带到下一份工作的运营底色。</p>
+    </div>
+    <div class="ref-grid">
+      <article class="ref reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 3.5V7M12 17v3.5M3.5 12H7M17 12h3.5"/></svg></div>
+        <h3>需求闭环</h3>
+        <p>从测试、客诉与竞品里发现机会，用 PRD 落地，再用线索与客诉数据验证效果，不把「提了反馈」当「做完」。</p>
+      </article>
+      <article class="ref reveal d1">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-6M11 20V6M17 20v-9M3 20h18"/></svg></div>
+        <h3>数据复盘</h3>
+        <p>盯结果指标（线索、咨询、客诉、成交、GMV）决定下一步：改版有没有效、素材该不该换，先看数据再看感觉。</p>
+      </article>
+      <article class="ref reveal d2">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3.5 19c.8-3 2.8-4.5 5.5-4.5s4.7 1.5 5.5 4.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M21 19c-.6-2.4-2.2-3.8-4.3-4.3"/></svg></div>
+        <h3>跨团队推动</h3>
+        <p>研发、商务、海外团队各说各话时，靠节点拆解与明确责任推进：谁做什么、什么时候交付，写清楚再动手。</p>
+      </article>
+      <article class="ref reveal d3">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h4M11 3v6l-6 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-6-9V3"/></svg></div>
+        <h3>快速验证</h3>
+        <p>小成本 AB 测试先行：先拿到平台差异与用户反馈，再投入素材、人力与预算，避免把资源押在假设上。</p>
+      </article>
+    </div>
+    <div class="rel-grid">
+      <div class="rel"><div class="k">相关经历 · 小米集团</div><h4>海外 TikTok 电商内容运营</h4><p>视频 SOP 从 0 到 1，覆盖约 10 国多语言账号，单周产能从 20–30 条提升至 <b>100+ 条</b>，单账号 5 日归因 GMV 超 2 万欧元。</p></div>
+      <div class="rel"><div class="k">相关经历 · 中国图书进出口</div><h4>平台运营 · KOC 管理</h4><p>独立管理 50+ 垂直领域 KOC，以精准 Brief 统一卖点并保留创作空间，合作内容平均互动率达 <b>8%</b>。</p></div>
+      <div class="rel"><div class="k">相关经历 · 芒果 MCN</div><h4>短视频内容运营</h4><p>沉淀爆款脚本结构模板，复制 <b>5 条 10w+</b>、10+ 条万赞爆款，账号平均播放稳定 10w+。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Outro ===== -->
+<section class="outro">
+  <div class="shell">
+    <div class="eyebrow" style="color:#FF8A8F">REDCLOUD × 百度 · CASE STUDY</div>
+    <h2>把工具做顺手，把增长做出来。</h2>
+    <p>这是一次「产品体验官 + 产品运营」的完整实践：发现问题、写成方案、推动上线、用数据验证，再把验证过的方法复制到下一件事。</p>
+    <button class="btn primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到顶部</button>
+    <p class="note">数据口径：本页所有数字来自真实实习经历（简历口径）。标注「示意数据」的图表为基于简历口径的演示呈现，不代表业务实际数据。单文件 HTML，无外部依赖，离线可打开。</p>
+  </div>
+</section>
+</main>
+
+<footer class="footer"><div class="shell">© 2026 · 陈彤彤 · 产品运营作品集 · REDcloud 案例页 · 百度 REDcloud 实习案例</div></footer>
+
+<script>
+(function(){
+  var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 1. KPI counters */
+  function fmt(v, f){
+    if(f==='plus') return '+'+Math.round(v);
+    if(f==='percent') return '+'+(v>=100?Math.round(v):Math.round(v))+'%';
+    if(f==='wan') return (v/10000).toFixed(2).replace(/0+$/,'').replace(/\.$/,'')+'万';
+    return Math.round(v).toLocaleString('en-US');
+  }
+  var counters = Array.prototype.slice.call(document.querySelectorAll('.metric .num'));
+  function runCounter(el){
+    var target = parseFloat(el.dataset.target), f = el.dataset.format;
+    if(RM){ el.textContent = fmt(target,f); return; }
+    var dur = 1200, t0 = null;
+    function tick(t){
+      if(!t0) t0 = t;
+      var p = Math.min((t-t0)/dur, 1), e = 1-Math.pow(1-p,3);
+      el.textContent = fmt(target*e, f);
+      if(p<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* 2. Scroll reveals + chart bars */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      var el = en.target;
+      if(el.classList.contains('metric')) runCounter(el.querySelector('.num'));
+      el.classList.add('on');
+      if(el.classList.contains('chart')){
+        Array.prototype.slice.call(el.querySelectorAll('.bar')).forEach(function(b,i){ b.classList.add('on'); b.style.transitionDelay=(i*70)+'ms'; });
+      }
+      io.unobserve(el);
+    });
+  }, {threshold:.28});
+  document.querySelectorAll('.metric, .reveal, .chart').forEach(function(el){ io.observe(el); });
+
+  /* 3. Hero console stages */
+  var consoleDetail = document.getElementById('consoleDetail');
+  var stageData = {
+    traffic:['公域引流','内容分发到 TikTok / Ins / FB 等公域，评论与私信引导进入私域，为承接链路提供流量入口。'],
+    private:['私域承接','统一承接入口，用户来源与画像自动打标，每一条线索都带标签进入后续环节。'],
+    bot:['AI 自动应答','高频问题由 AI bot 秒回，疑难问题自动标记转人工，客服压力大幅下降。'],
+    human:['人工兜底','被标记的疑难问题由人工补充处理，保障体验下限，同时反哺 FAQ 知识库。']
+  };
+  document.querySelectorAll('.stage').forEach(function(s){
+    function activate(){
+      document.querySelectorAll('.stage').forEach(function(x){ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+      s.classList.add('active'); s.setAttribute('aria-selected','true');
+      var d = stageData[s.dataset.stage];
+      consoleDetail.textContent = d[0] + '：' + d[1];
+    }
+    s.addEventListener('click', activate);
+    s.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); } });
+  });
+
+  /* 4. Automation pipeline nodes */
+  var pipeDetail = document.getElementById('pipeDetail');
+  var pipeData = {
+    traffic:{t:'公域引流', p:'内容分发到 TikTok / Ins / FB 等公域，评论与私信引导进入私域，为承接链路提供流量入口。', l:['多平台内容分发','评论 / 私信统一引导']},
+    private:{t:'私域承接', p:'承接链路统一入口，用户来源与画像自动打标，线索进入后续环节时自带上下文。', l:['统一承接入口','来源与画像自动打标']},
+    bot:{t:'AI 自动应答', p:'预置 FAQ 知识库覆盖高频咨询，AI bot 自动回复并自动标记疑难问题，人工只处理被标记的少数疑难，客服人力大幅释放。', l:['高频问题自动秒回','疑难问题自动标记','知识库持续沉淀']},
+    human:{t:'人工兜底', p:'被标记的疑难问题由人工补充处理，保障体验下限，同时把新的问答沉淀回知识库，越用越准。', l:['疑难人工补充','体验下限保障','问答反哺知识库']},
+    workflow:{t:'内容工作流', p:'与应答链路并行：自动生成视频文案与标签，减少重复生产劳动，让内容产出跟上多平台分发节奏。', l:['文案自动生成','标签自动生成','多平台批量复用']}
+  };
+  function renderPipe(key){
+    var d = pipeData[key];
+    pipeDetail.innerHTML = '<div class="pd-k">' + d.t + '</div><p>' + d.p + '</p><ul>' + d.l.map(function(x){ return '<li>'+x+'</li>'; }).join('') + '</ul>';
+    document.querySelectorAll('.node').forEach(function(n){ n.classList.toggle('active', n.dataset.node===key); });
+  }
+  document.querySelectorAll('.node').forEach(function(n){
+    n.addEventListener('click', function(){ renderPipe(n.dataset.node); });
+  });
+})();
+</script>
+<script src="../../../assets/motion.js"></script></body>
+</html>

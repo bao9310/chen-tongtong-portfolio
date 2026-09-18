@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>多语言视频发布质检工作台 · 作品演示</title>
+
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#0a101d;--bg1:#0e1626;--bg2:#131e33;--bg3:#1a2740;
+  --line:#1e2b47;--line2:#2a3a5e;
+  --ink:#e8eef9;--muted:#94a4c1;--faint:#5f6f8f;
+  --accent:#3e8bff;--accent2:#6fb0ff;
+  --pass:#34d399;--warn:#f5b04c;--danger:#f47174;--ai:#a78bfa;
+  --r:14px;
+  --fd:"Space Grotesk","Noto Sans SC",system-ui,sans-serif;
+  --fb:"Noto Sans SC",system-ui,"Microsoft Yahei",sans-serif;
+  --fm:"JetBrains Mono",Consolas,"Courier New",monospace;
+}
+html{scroll-behavior:smooth}
+body{
+  background:radial-gradient(1100px 420px at 50% -140px,rgba(46,76,148,.22),transparent 62%),var(--bg0);
+  color:var(--ink);font:14px/1.6 var(--fb);-webkit-font-smoothing:antialiased;min-height:100vh;
+}
+::selection{background:rgba(62,139,255,.35)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--fm);font-size:12px}
+.tnum{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
+
+/* ===== 顶栏 ===== */
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:16px;padding:11px 4vw;background:var(--bg1);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand>div{min-width:0}
+.mark{width:34px;height:34px;flex:none}
+.brand-name{font:600 16px var(--fd);letter-spacing:.2px;white-space:nowrap}
+.brand-sub{font-size:11.5px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:10px;flex:none}
+
+/* ===== 按钮 ===== */
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);font:500 13px var(--fb);padding:8px 14px;border-radius:8px;cursor:pointer;text-decoration:none;transition:border-color .18s,background .18s,color .18s,transform .12s;white-space:nowrap}
+.btn:hover{border-color:var(--accent);background:var(--bg3)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:#55a0ff;border-color:#55a0ff}
+.btn.ghost{background:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--ink)}
+.btn.sm{padding:5px 10px;font-size:12px;border-radius:7px}
+
+/* ===== 标签 ===== */
+.pill{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.green{color:var(--pass);background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.32)}
+.pill.amber{color:var(--warn);background:rgba(245,176,76,.12);border:1px solid rgba(245,176,76,.32)}
+.pill.red{color:var(--danger);background:rgba(244,113,116,.12);border:1px solid rgba(244,113,116,.32)}
+.pill.blue{color:var(--accent2);background:rgba(62,139,255,.12);border:1px solid rgba(62,139,255,.32)}
+.pill.ai{color:var(--ai);background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.32)}
+
+/* ===== 布局容器 ===== */
+.wrap{max-width:1440px;margin:0 auto;padding:0 4vw}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+
+/* ===== Hero ===== */
+.hero{display:flex;gap:28px;align-items:flex-end;justify-content:space-between;padding:30px 0 10px;flex-wrap:wrap}
+.hero h1{font:700 clamp(23px,3vw,32px)/1.28 var(--fd);letter-spacing:.2px}
+.hero .sub{color:var(--muted);margin-top:9px;max-width:660px;font-size:14px}
+.live{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-size:12px;color:var(--muted)}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--pass);position:relative}
+.live i::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--pass);opacity:0;animation:ping 2.4s ease-out infinite}
+@keyframes ping{0%{opacity:.7;transform:scale(.6)}70%{opacity:0;transform:scale(1.3)}100%{opacity:0}}
+.hero-stats{display:grid;grid-template-columns:repeat(4,auto);gap:10px 30px}
+.stat .v{font:600 25px var(--fd);color:#fff;font-variant-numeric:tabular-nums}
+.stat .l{font-size:12px;color:var(--faint);margin-top:2px}
+
+/* ===== 提示条 ===== */
+.notice{display:flex;align-items:center;gap:16px;justify-content:space-between;background:rgba(245,176,76,.07);border:1px solid rgba(245,176,76,.26);border-radius:var(--r);padding:11px 16px;margin-top:16px;flex-wrap:wrap}
+.notice .ntext{font-size:12.5px;color:#d8c9a8;max-width:860px}
+.notice .ntext b{color:var(--warn);font-weight:600}
+
+/* ===== KPI ===== */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+.kpi{background:var(--bg1);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.k-label{font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.k-num{font:600 30px/1.2 var(--fd);margin-top:7px;font-variant-numeric:tabular-nums}
+.k-sub{font-size:12px;color:var(--faint);margin-top:5px}
+.k-delta{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:600}
+.k-delta.good{color:var(--pass);background:rgba(52,211,153,.12)}
+.k-delta.bad{color:var(--danger);background:rgba(244,113,116,.12)}
+.k-delta.flat{color:var(--faint);background:rgba(95,111,143,.12)}
+@keyframes flash{0%{background:rgba(62,139,255,.20)}100%{background:transparent}}
+.flash{animation:flash .55s ease-out;border-radius:8px}
+
+/* ===== 排期条 ===== */
+.sched{display:flex;align-items:center;gap:16px;background:var(--bg1);border:1px solid var(--line);border-radius:var(--r);padding:12px 18px;margin-top:14px;flex-wrap:wrap}
+.sched .s-label{font-size:12px;color:var(--faint);font-weight:600}
+.sched .node{display:flex;align-items:center;gap:9px}
+.sched .node .ic{width:30px;height:30px;border-radius:8px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex:none}
+.sched .node .ic svg{width:16px;height:16px;stroke:var(--accent2)}
+.sched .node .t{font:600 15px var(--fd);font-variant-numeric:tabular-nums}
+.sched .node .d{font-size:11.5px;color:var(--faint);margin-top:1px}
+.sched .arr{color:var(--faint);flex:none}
+.sched .rule{margin-left:auto;font-size:12px;color:var(--muted);max-width:430px;text-align:right}
+
+/* ===== 面板 ===== */
+.panel{background:var(--bg1);border:1px solid var(--line);border-radius:var(--r)}
+.panel .ph{display:flex;align-items:baseline;gap:12px;padding:16px 20px 0;flex-wrap:wrap}
+.panel .ph h2{font:600 16px var(--fb);color:var(--ink)}
+.panel .ph .meta{margin-left:auto;font-size:12px;color:var(--faint)}
+.panel .pb{padding:14px 20px 20px}
+.chart-box{position:relative}
+.chart{width:100%;height:300px}
+.donut-center{position:absolute;left:30%;top:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.donut-center .v{font:700 26px var(--fd);color:#fff;font-variant-numeric:tabular-nums}
+.donut-center .l{font-size:12px;color:var(--faint);margin-top:2px}
+
+/* ===== 滚动揭示 ===== */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ===== 任务列表 ===== */
+.risk-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:4px}
+.risk-strip b{color:var(--faint);font-weight:600}
+.risk-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--bg2);border-radius:99px;padding:3px 10px;font-size:12px}
+.risk-chip i{width:6px;height:6px;border-radius:50%}
+.risk-chip.warn{color:var(--warn)}.risk-chip.warn i{background:var(--warn)}
+.risk-chip.danger{color:var(--danger)}.risk-chip.danger i{background:var(--danger)}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0 12px}
+.toolbar label{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);white-space:nowrap}
+select,input[type=search]{font:13px var(--fb);background:var(--bg2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:7px 11px}
+select:focus,input[type=search]:focus{border-color:var(--accent);outline:none}
+.toolbar .grow{margin-left:auto}
+input[type=search]{width:220px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:940px}
+thead th{font-size:12px;color:var(--muted);text-align:left;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--line);font-weight:500;white-space:nowrap}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:13px}
+tbody tr:last-child td{border-bottom:0}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:var(--bg2)}
+.cm{font-weight:600;color:var(--ink)}
+.cs{font-size:12px;color:var(--faint);margin-top:2px}
+.cd b{color:var(--warn);font-weight:600}
+.cd b.now{color:var(--pass)}
+.risk{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--danger);margin:5px 10px 0 0;white-space:nowrap}
+.risk::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--danger);flex:none}
+.cprog{width:92px;height:5px;border-radius:99px;background:var(--bg3);overflow:hidden;margin-top:6px}
+.cprog i{display:block;height:100%;border-radius:99px;background:var(--pass);transition:width .4s ease}
+.ops{display:flex;gap:6px;align-items:center}
+.empty{text-align:center;color:var(--faint);padding:36px 0;font-size:13px}
+.empty button{margin-left:8px}
+
+/* ===== SOP 时间轴 ===== */
+.timeline{position:relative;display:grid;grid-template-columns:96px 30px 1fr;margin-top:6px}
+.timeline::before{content:"";position:absolute;left:111px;top:26px;bottom:26px;width:2px;background:var(--line2)}
+.tl-row{display:contents}
+.tl-step{text-align:right;padding-right:16px;padding-top:12px}
+.tl-step .no{font:600 14px var(--fm);color:var(--accent)}
+.tl-step .lab{font-size:12px;color:var(--faint);margin-top:2px}
+.tl-axis{display:flex;justify-content:center}
+.tl-dot{width:13px;height:13px;border-radius:50%;background:var(--bg0);border:3px solid var(--accent);margin-top:21px;z-index:1}
+.tl-content{padding:10px 0 14px 18px}
+.tl-content .t{font-weight:600;font-size:14px}
+.tl-content .t .core-tag{margin-left:8px;font-size:11px;font-weight:600;color:var(--ai);border:1px solid rgba(167,139,250,.4);border-radius:99px;padding:1px 8px;vertical-align:1px}
+.tl-content .d{font-size:12.5px;color:var(--muted);margin-top:3px;max-width:640px}
+.tl-content .k{font-size:12px;color:var(--faint);margin-top:5px}
+.tl-content .k b{color:var(--muted);font-weight:600}
+.tl-row.core .tl-dot{border-color:var(--ai)}
+.tl-row.core .tl-content{background:rgba(167,139,250,.055);border-left:2px solid rgba(167,139,250,.45);border-radius:0 10px 10px 0;padding-left:16px}
+
+/* ===== AI 提效点 ===== */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:30px}
+.ai-item{display:flex;gap:13px;padding:14px 2px;border-bottom:1px solid var(--line)}
+.ai-item:nth-last-child(-n+2){border-bottom:0}
+.ai-ic{width:36px;height:36px;border-radius:10px;background:rgba(167,139,250,.10);border:1px solid rgba(167,139,250,.28);display:flex;align-items:center;justify-content:center;flex:none}
+.ai-ic svg{width:18px;height:18px;stroke:var(--ai)}
+.ai-item .t{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ai-item .t .tag{font-size:11px;color:var(--accent2);background:rgba(62,139,255,.10);border:1px solid rgba(62,139,255,.28);border-radius:99px;padding:1px 8px;font-weight:500}
+.ai-item .d{font-size:12.5px;color:var(--muted);margin-top:3px;max-width:520px}
+
+/* ===== 对比 ===== */
+.ba{display:grid;grid-template-columns:74px 1fr 1fr;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.ba .ba-l{font-size:13px;font-weight:600}
+.ba-bar .ba-bar-h{font-size:11px;color:var(--faint);margin-bottom:5px}
+.bar{height:9px;border-radius:99px;background:var(--bg3);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--faint);width:var(--w)}
+.bar.after i{background:linear-gradient(90deg,var(--accent),var(--pass))}
+.hint{font-size:12px;color:var(--faint);margin-top:14px;line-height:1.7}
+.method{list-style:none}
+.method li{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--muted);line-height:1.7}
+.method li:last-child{border-bottom:0}
+.method li::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--accent);margin-top:8px;flex:none}
+
+/* ===== 页脚 ===== */
+.foot{padding:22px 4vw 44px;max-width:1440px;margin:0 auto;color:var(--faint);font-size:12px;line-height:1.9}
+
+/* ===== 抽屉 ===== */
+.drawer{position:fixed;top:0;right:-480px;width:min(460px,100vw);height:100dvh;background:var(--bg1);border-left:1px solid var(--line2);z-index:50;padding:20px;overflow-y:auto;transition:right .3s cubic-bezier(.22,1,.36,1)}
+.drawer.open{right:0}
+.d-close{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--bg2);color:var(--muted);font-size:20px;line-height:1;cursor:pointer}
+.d-close:hover{color:var(--ink);border-color:var(--accent)}
+.d-title{font:600 18px var(--fd);padding-right:44px}
+.d-sub{font-size:12.5px;color:var(--muted);margin-top:4px}
+.d-pills{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.d-hint{background:rgba(245,176,76,.07);border:1px solid rgba(245,176,76,.26);color:#d8c9a8;border-radius:10px;padding:9px 12px;font-size:12.5px;margin-top:14px}
+.d-sec-h{font-size:12px;color:var(--muted);font-weight:600;margin:18px 0 8px;letter-spacing:.4px}
+.ev{border-left:3px solid var(--danger);background:rgba(244,113,116,.06);padding:9px 12px;margin:8px 0;border-radius:0 8px 8px 0}
+.ev .ev-t{font-size:13px;font-weight:600;color:var(--ink)}
+.ev .ev-d{font-size:12px;color:var(--muted);margin-top:2px}
+.ev.ok{border-left-color:var(--pass);background:rgba(52,211,153,.06);color:var(--pass)}
+.ck{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.ck select{min-width:110px}
+.ck.col{flex-direction:column;align-items:stretch}
+.ck.col input{font:13px var(--fb);background:var(--bg2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:7px 11px}
+.ck .cs{font-size:11.5px;color:var(--faint);display:block;margin-top:2px}
+.d-actions{display:flex;gap:10px;margin-top:18px}
+.d-note{font-size:11.5px;color:var(--faint);margin-top:14px}
+
+/* ===== Toast ===== */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg3);border:1px solid var(--line2);color:var(--ink);padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .reveal{opacity:1;transform:none}
+  .live i::after{display:none}
+}
+
+/* ===== 响应式 ===== */
+@media(max-width:1080px){
+  .grid2{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .hero-stats{grid-template-columns:repeat(2,auto);gap:10px 26px}
+}
+@media(max-width:760px){
+  .topbar{padding:10px 14px}
+  .brand-sub{display:none}
+  .brand-name{font-size:14px}
+  .wrap{padding:0 14px}
+  .sched .rule{text-align:left;margin-left:0;width:100%}
+  .toolbar .grow{margin-left:0;width:100%}
+  input[type=search]{width:100%}
+  .ai-grid{grid-template-columns:1fr}
+  .ai-item:nth-last-child(-n+2){border-bottom:1px solid var(--line)}
+  .ai-item:last-child{border-bottom:0}
+  .timeline{grid-template-columns:64px 22px 1fr}
+  .timeline::before{left:75px}
+  .tl-step{padding-right:10px}
+  .tl-content{padding-left:12px}
+  .ba{grid-template-columns:1fr;gap:8px}
+  .hero-stats{gap:10px 22px}
+  .notice .ntext{max-width:none}
+}
+@media(max-width:520px){
+  .top-actions .pill{display:none}
+  .mark{width:28px;height:28px}
+  .brand-name{font-size:13px}
+  .btn{padding:7px 10px;font-size:12px}
+  .hero h1{font-size:22px}
+  .kpi{padding:13px 14px}
+  .k-num{font-size:25px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+    <div>
+      <div class="brand-name">多语言视频发布质检工作台</div>
+      <div class="brand-sub">AI 预检 · 人工复核 · 修改单闭环</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="pill ai">演示数据</span>
+    <button class="btn ghost" id="btnReset" type="button">重置演示数据</button>
+    <button class="btn primary" id="btnExport" type="button">导出修改单</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div>
+      <h1>把多语言发布的风险，拦在上线之前</h1>
+      <p class="sub">面向矩阵化海外内容发布的质检工作台：AI 预检 6 项风险 + 人工复核 + 修改单闭环。管理多国家、多语言账号的发布前检查与风控，任何一项未通过即阻止发布。</p>
+      <div class="live"><i></i>规则引擎在线 · 6 项检查 / 任务</div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="v tnum" id="sMarkets">6</div><div class="l">覆盖市场</div></div>
+      <div class="stat"><div class="v tnum" id="sJobs">24</div><div class="l">任务版本</div></div>
+      <div class="stat"><div class="v tnum">6</div><div class="l">检查项 / 任务</div></div>
+      <div class="stat"><div class="v tnum" id="sRate">–</div><div class="l">质检完成率</div></div>
+    </div>
+  </section>
+
+  <div class="notice">
+    <div class="ntext">本页为求职作品演示：全部数据为 <b>synthetic 演示数据</b>，不接入真实平台 / 账号 / 版权库；质检仅检查已录入字段与人工记录，未检不等于通过。</div>
+    <button class="btn primary" id="btnQuick" type="button">处理一个待审任务（J2 · 德语）</button>
+  </div>
+
+  <section class="kpis reveal">
+    <div class="kpi">
+      <div class="k-label">今日任务 <span class="k-delta flat" id="dTotal">–</span></div>
+      <div class="k-num tnum" id="kTotal">–</div>
+      <div class="k-sub">全部语言版本</div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">待审核 <span class="k-delta flat" id="dPending">–</span></div>
+      <div class="k-num tnum" id="kPending">–</div>
+      <div class="k-sub">未录入审核结论</div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">已通过 <span class="k-delta flat" id="dApproved">–</span></div>
+      <div class="k-num tnum" id="kApproved">–</div>
+      <div class="k-sub" id="kApprovedSub">–</div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">阻止发布 <span class="k-delta flat" id="dBlocked">–</span></div>
+      <div class="k-num tnum" id="kBlocked">–</div>
+      <div class="k-sub" id="kBlockedSub">–</div>
+    </div>
+  </section>
+
+  <section class="sched reveal">
+    <span class="s-label">当日排期</span>
+    <div class="node"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg></div><div><div class="t">17:30</div><div class="d">剪辑交接 · 交齐当日工作量</div></div></div>
+    <span class="arr">→</span>
+    <div class="node"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div><div><div class="t">18:30</div><div class="d">审核交接 · 完成当日审核</div></div></div>
+    <span class="arr">→</span>
+    <div class="node"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M5 15 12 22l7-7"/></svg></div><div><div class="t">15:00 起</div><div class="d">解禁发布 · 参数解禁后放行</div></div></div>
+    <div class="rule">工作日规则：17:30 前交齐当日工作量 · 18:30 前完成当日审核 · 发布时间不得早于解禁时间</div>
+  </section>
+
+  <section class="grid2">
+    <div class="panel reveal" id="pDonut">
+      <div class="ph"><h2>任务状态分布</h2><div class="meta" id="donutMeta">–</div></div>
+      <div class="pb chart-box"><div id="chartDonut" class="chart"></div><div class="donut-center"><div class="v tnum" id="dcRate">–</div><div class="l">审核完成率</div></div></div>
+    </div>
+    <div class="panel reveal" id="pBars">
+      <div class="ph"><h2>各市场质检进度</h2><div class="meta">已通过 / 待审核 / 返工</div></div>
+      <div class="pb"><div id="chartBars" class="chart"></div></div>
+    </div>
+  </section>
+
+  <section class="panel reveal tasks" style="margin-top:14px">
+    <div class="ph"><h2>今日任务列表</h2><div class="meta" id="rowCount">–</div></div>
+    <div class="pb">
+      <div class="risk-strip" id="riskStrip"></div>
+      <div class="toolbar">
+        <label>语言 <select id="fLang"><option value="all">全部</option><option value="en">英语</option><option value="de">德语</option><option value="es">西班牙语</option><option value="ms">马来语</option><option value="th">泰语</option></select></label>
+        <label>状态 <select id="fStatus"><option value="all">全部</option><option value="blocked">阻止发布</option><option value="ready">可发布</option></select></label>
+        <label class="grow">搜索 <input id="fSearch" type="search" placeholder="任务 ID / 市场 / 平台…" autocomplete="off"></label>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>任务</th><th>平台 / 阶段</th><th>当地发布时间</th><th>审核状态</th><th>发布准备</th><th>检查进度</th><th>操作</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel reveal" style="margin-top:14px">
+    <div class="ph"><h2>发布全链路 SOP</h2><div class="meta">沉淀自多国多语言账号矩阵运营 · 第 4、5 环节为本工作台核心</div></div>
+    <div class="pb">
+      <div class="timeline">
+        <div class="tl-row"><div class="tl-step"><div class="no">01</div><div class="lab">S1</div></div><div class="tl-axis"><span class="tl-dot"></span></div><div class="tl-content"><div class="t">选题策划</div><div class="d">按海外市场与平台偏好确定选题，输出创作 Brief 与排期</div><div class="k">关键：<b>10+ 国家矩阵</b></div></div></div>
+        <div class="tl-row"><div class="tl-step"><div class="no">02</div><div class="lab">S2</div></div><div class="tl-axis"><span class="tl-dot"></span></div><div class="tl-content"><div class="t">拍摄制作</div><div class="d">自制拍摄 + 官方授权素材库组合，规避纯 AI 素材限流风险</div><div class="k">关键：<b>授权素材优先</b></div></div></div>
+        <div class="tl-row"><div class="tl-step"><div class="no">03</div><div class="lab">S3</div></div><div class="tl-axis"><span class="tl-dot"></span></div><div class="tl-content"><div class="t">剪辑加工</div><div class="d">多语言字幕、配音、画面按统一制作标准完成并交接</div><div class="k">关键：<b>单周产能 100+ 条</b></div></div></div>
+        <div class="tl-row core"><div class="tl-step"><div class="no">04</div><div class="lab">S4</div></div><div class="tl-axis"><span class="tl-dot"></span></div><div class="tl-content"><div class="t">AI 质检预检<span class="core-tag">本工具核心</span></div><div class="d">自动预检语言残留、参数解禁、素材授权、平台规则，产出风险清单</div><div class="k">关键：<b>6 项自动检查</b></div></div></div>
+        <div class="tl-row core"><div class="tl-step"><div class="no">05</div><div class="lab">S5</div></div><div class="tl-axis"><span class="tl-dot"></span></div><div class="tl-content"><div class="t">人工复核<span class="core-tag">本工具核心</span></div><div class="d">逐项确认检查记录、录入审核结论，未通过即阻止发布</div><div class="k">关键：<b>18:30 前完成当日审核</b></div></div></div>
+        <div class="tl-row"><div class="tl-step"><div class="no">06</div><div class="lab">S6</div></div><div class="tl-axis"><span class="tl-dot"></span></div><div class="tl-content"><div class="t">发布分发</div><div class="d">解禁时间后发布，曝光、点击、成交数据回流复盘选题与素材策略</div><div class="k">关键：<b>数据回流驱动迭代</b></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel reveal" style="margin-top:14px">
+    <div class="ph"><h2>AI 提效点</h2><div class="meta">把人工经验固化为可执行检查</div></div>
+    <div class="pb">
+      <div class="ai-grid">
+        <div class="ai-item"><div class="ai-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div><div><div class="t">多语言残留检测<span class="tag">从客诉定位</span></div><div class="d">自动扫描字幕 / 标题中的非目标语言字符（如英文版残留中文），把国际化 BUG 拦在上线前</div></div></div>
+        <div class="ai-item"><div class="ai-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div><div><div class="t">参数解禁校验<span class="tag">新品发售风控</span></div><div class="d">对照可公开参数清单，拦截未公布参数的曝光泄露，发布时间早于解禁一律阻止</div></div></div>
+        <div class="ai-item"><div class="ai-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg></div><div><div class="t">素材授权核验<span class="tag">规避版权风险</span></div><div class="d">二创素材强制记录来源与授权状态，未核验一律阻止发布，授权记录可追溯</div></div></div>
+        <div class="ai-item"><div class="ai-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div><div><div class="t">平台规则预检<span class="tag">平台差异适配</span></div><div class="d">按平台提示纯 AI 素材限流风险（TikTok 排斥 AI 内容），引导切换授权素材 / 实拍</div></div></div>
+        <div class="ai-item"><div class="ai-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg></div><div><div class="t">检查项清单化<span class="tag">人工经验固化</span></div><div class="d">字幕、音乐、配音、画面、去重逐项录入，缺失项自动汇入风险并提示处理</div></div></div>
+        <div class="ai-item"><div class="ai-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg></div><div><div class="t">一键导出修改单<span class="tag">跨团队协作</span></div><div class="d">按当前筛选导出 CSV 修改单，直接回传剪辑与外部团队，减少沟通损耗</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="panel reveal">
+      <div class="ph"><h2>方法验证：优化前后对比</h2><div class="meta">项目复盘数据 · 示意图</div></div>
+      <div class="pb">
+        <div class="ba"><div class="ba-l">单周产能</div><div class="ba-bar"><div class="ba-bar-h">优化前 · 20–30 条</div><div class="bar before"><i style="--w:26%"></i></div></div><div class="ba-bar"><div class="ba-bar-h">优化后 · 100+ 条</div><div class="bar after"><i style="--w:100%"></i></div></div></div>
+        <div class="ba"><div class="ba-l">单条曝光</div><div class="ba-bar"><div class="ba-bar-h">优化前 · 百级</div><div class="bar before"><i style="--w:10%"></i></div></div><div class="ba-bar"><div class="ba-bar-h">优化后 · 2–3 万级</div><div class="bar after"><i style="--w:78%"></i></div></div></div>
+        <div class="ba"><div class="ba-l">质检返工</div><div class="ba-bar"><div class="ba-bar-h">优化前 · 高频返工</div><div class="bar before"><i style="--w:55%"></i></div></div><div class="ba-bar"><div class="ba-bar-h">优化后 · 明显减少</div><div class="bar after"><i style="--w:12%"></i></div></div></div>
+        <p class="hint">数据来自实习项目复盘（百度 · 小米，2026.01–2026.08）；演示页仅展示方法沉淀，不承诺工具独立产出上述结果。</p>
+      </div>
+    </div>
+    <div class="panel reveal">
+      <div class="ph"><h2>方法沉淀</h2><div class="meta">这套工作台背后的运营方法</div></div>
+      <div class="pb">
+        <ul class="method">
+          <li>从客诉、线索、产能与成交等一线反馈反向定位问题，落到可执行的优化清单</li>
+          <li>规则先固化再优化：检查项、参数清单、授权状态全部结构化，人工经验沉淀为引擎</li>
+          <li>数据闭环：曝光 / 点击 / 成交结果反哺选题、素材与人力策略，快速验证迭代</li>
+          <li>跨团队协作：修改单一键导出，减少剪辑、运营与外部团队之间的沟通损耗</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  本页为求职作品演示：全部数据为 synthetic 演示数据，未接入真实平台 / 账号 / 版权库；质检仅检查已录入字段与人工记录，未检不等于通过，外部发布与真实版权确认均需人工完成。<br>
+  导出的修改单仅包含当前筛选与本地人工录入结果。背景数据引用自实习项目复盘（百度 · 小米 · 中图 · 芒果，2025.05–2026.08）。页面在桌面与移动端均可使用，动效遵循系统「减少动态效果」设置。
+</footer>
+
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="任务操作面板">
+  <button class="d-close" id="dClose" type="button" aria-label="关闭">×</button>
+  <div id="dBody"></div>
+</aside>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="../../../assets/vendor/echarts.min.js"></script>
+<script>
+/* ================= 数据模型 ================= */
+const CHECKS=['字幕人工校对','音乐人工检查','配音人工检查','画面人工检查','画面去重核对','素材来源标记'];
+const LANGS={en:'英语',de:'德语',es:'西班牙语',ms:'马来语',th:'泰语'};
+const RELEASE='2026-09-18T15:00:00+02:00';
+const fullChecks=()=>Object.fromEntries(CHECKS.map(k=>[k,true]));
+const partialChecks=()=>({...fullChecks(),'字幕人工校对':null});
+function job(id,market,lc,platform,stage,tz,tzA,publish,review,origin,license,checks,form){
+  return {id,market,lc,platform,stage,tz,tzA,publish,release:RELEASE,off:publish.slice(19),review,origin,license,checks,form,
+    asset:'A'+id.slice(1),video:'https://example.com/synthetic/'+id.toLowerCase()};
+}
+const jobs0=[
+  job('J1','美国','en','TikTok','预热','America/New_York','EDT','2026-09-18T19:00:00-04:00','approved','自制拍摄','verified',fullChecks(),'30秒产品卖点版'),
+  job('J7','美国','en','YouTube','正式','America/New_York','EDT','2026-09-20T12:00:00-04:00','approved','自制拍摄','verified',fullChecks(),'60秒品牌故事版'),
+  job('J8','美国','en','TikTok','预热','America/New_York','EDT','2026-09-20T19:00:00-04:00','pending','授权素材库','verified',partialChecks(),'15秒竖版切片'),
+  job('J19','美国','en','TikTok','预热','America/New_York','EDT','2026-09-19T12:00:00-04:00','approved','自制拍摄','verified',fullChecks(),'15秒竖版切片'),
+  job('J20','美国','en','YouTube','正式','America/New_York','EDT','2026-09-21T12:00:00-04:00','pending','网络二创','unknown',partialChecks(),'60秒品牌故事版'),
+  job('J2','德国','de','YouTube','预热','Europe/Berlin','CEST','2026-09-18T08:00:00+02:00','pending','网络二创','unknown',partialChecks(),'30秒产品卖点版'),
+  job('J11','德国','de','TikTok','预热','Europe/Berlin','CEST','2026-09-20T19:00:00+02:00','approved','自制拍摄','verified',fullChecks(),'15秒竖版切片'),
+  job('J12','德国','de','YouTube','正式','Europe/Berlin','CEST','2026-09-21T12:00:00+02:00','rework','网络二创','unknown',partialChecks(),'30秒产品卖点版'),
+  job('J21','德国','de','YouTube','预热','Europe/Berlin','CEST','2026-09-19T12:00:00+02:00','approved','自制拍摄','verified',fullChecks(),'30秒产品卖点版'),
+  job('J5','英国','en','YouTube','预热','Europe/London','BST','2026-09-19T19:00:00+01:00','pending','自制拍摄','verified',partialChecks(),'30秒产品卖点版'),
+  job('J9','英国','en','TikTok','预热','Europe/London','BST','2026-09-20T18:30:00+01:00','approved','自制拍摄','verified',fullChecks(),'15秒竖版切片'),
+  job('J10','英国','en','YouTube','正式','Europe/London','BST','2026-09-21T12:00:00+01:00','rework','网络二创','unknown',partialChecks(),'30秒产品卖点版'),
+  job('J22','英国','en','TikTok','预热','Europe/London','BST','2026-09-20T12:00:00+01:00','approved','授权素材库','verified',fullChecks(),'15秒竖版切片'),
+  job('J3','墨西哥','es','TikTok','预热','America/Mexico_City','CST','2026-09-19T19:00:00-06:00','pending','自制拍摄','verified',partialChecks(),'15秒竖版切片'),
+  job('J13','墨西哥','es','YouTube','正式','America/Mexico_City','CST','2026-09-20T12:00:00-06:00','approved','自制拍摄','verified',fullChecks(),'30秒产品卖点版'),
+  job('J14','墨西哥','es','TikTok','预热','America/Mexico_City','CST','2026-09-20T19:00:00-06:00','pending','授权素材库','verified',partialChecks(),'15秒竖版切片'),
+  job('J23','墨西哥','es','YouTube','正式','America/Mexico_City','CST','2026-09-21T12:00:00-06:00','rework','网络二创','unknown',partialChecks(),'60秒品牌故事版'),
+  job('J4','马来西亚','ms','TikTok','预热','Asia/Kuala_Lumpur','+08','2026-09-19T19:00:00+08:00','pending','自制拍摄','verified',partialChecks(),'15秒竖版切片'),
+  job('J15','马来西亚','ms','TikTok','预热','Asia/Kuala_Lumpur','+08','2026-09-20T19:00:00+08:00','approved','自制拍摄','verified',fullChecks(),'15秒竖版切片'),
+  job('J16','马来西亚','ms','YouTube','正式','Asia/Kuala_Lumpur','+08','2026-09-21T12:00:00+08:00','pending','授权素材库','verified',partialChecks(),'30秒产品卖点版'),
+  job('J6','泰国','th','TikTok','预热','Asia/Bangkok','+07','2026-09-19T19:00:00+07:00','pending','自制拍摄','verified',partialChecks(),'15秒竖版切片'),
+  job('J17','泰国','th','YouTube','正式','Asia/Bangkok','+07','2026-09-20T12:00:00+07:00','approved','自制拍摄','verified',fullChecks(),'30秒产品卖点版'),
+  job('J18','泰国','th','TikTok','预热','Asia/Bangkok','+07','2026-09-20T19:00:00+07:00','pending','网络二创','unknown',partialChecks(),'15秒竖版切片'),
+  job('J24','泰国','th','YouTube','预热','Asia/Bangkok','+07','2026-09-21T12:00:00+07:00','approved','授权素材库','verified',fullChecks(),'60秒品牌故事版')
+];
+let jobs=JSON.parse(JSON.stringify(jobs0));
+let currentId=null;
+
+/* ================= 工具函数 ================= */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtT=iso=>iso.slice(5,10)+' '+iso.slice(11,16); /* 保持市场当地时间展示 */
+function cdTxt(iso){
+  const diff=new Date(iso).getTime()-Date.now();
+  if(diff<0) return '<b class="now">发布窗口内</b>';
+  const d=Math.ceil(diff/864e5);
+  if(d<=1){const h=Math.max(1,Math.ceil(diff/36e5));return '<b>'+h+' 小时后</b>';}
+  return '<b>'+d+' 天后</b>';
+}
+function issues(j){
+  const out=[];
+  if(new Date(j.publish)<new Date(j.release)) out.push(['参数未解禁','F1 发布时间早于可公开时间（'+fmtT(j.publish)+' '+j.tzA+' < '+fmtT(j.release)+' CEST）']);
+  if(j.license!=='verified') out.push(['素材授权待核验',j.asset+' · '+j.origin]);
+  for(const k of CHECKS) if(j.checks[k]!==true) out.push([k+'未完成','check:'+k]);
+  if(j.review!=='approved') out.push(['人工审核未通过','review_status='+j.review]);
+  return out;
+}
+const stateOf=j=>issues(j).length?'blocked':'ready';
+const revPill=j=>j.review==='approved'?'<span class="pill green">已通过</span>':j.review==='pending'?'<span class="pill amber">待审核</span>':'<span class="pill red">返工</span>';
+
+function setNum(id,val,flash){
+  const el=document.getElementById(id); if(!el) return;
+  if(el.textContent!==String(val)){
+    el.textContent=val;
+    if(flash!==false){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+  }
+}
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2400);
+}
+function stamp(){const d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes());}
+
+/* ================= 渲染管线 ================= */
+function filtered(){
+  const q=document.getElementById('fSearch').value.trim().toLowerCase();
+  return jobs.filter(j=>
+    (document.getElementById('fLang').value==='all'||j.lc===document.getElementById('fLang').value)&&
+    (document.getElementById('fStatus').value==='all'||stateOf(j)===document.getElementById('fStatus').value)&&
+    (!q||(j.id+' '+j.market+' '+LANGS[j.lc]+' '+j.platform+' '+j.form).toLowerCase().includes(q)));
+}
+function renderKpis(){
+  const total=jobs.length;
+  const approved=jobs.filter(j=>j.review==='approved').length;
+  const pending=jobs.filter(j=>j.review==='pending').length;
+  const blocked=jobs.filter(j=>stateOf(j)==='blocked').length;
+  const rate=total?Math.round(approved/total*100):0;
+  setNum('kTotal',total);setNum('kPending',pending);setNum('kApproved',approved);setNum('kBlocked',blocked);
+  setNum('kApprovedSub','占全部 '+rate+'%',false);setNum('kBlockedSub','占全部 '+Math.round(blocked/total*100)+'%',false);
+  setNum('sRate',rate+'%',false);setNum('dcRate',rate+'%',false);
+  const y={total:20,pending:11,approved:9,blocked:11};
+  const cur=k=>k==='total'?total:k==='pending'?pending:k==='approved'?approved:blocked;
+  const delta=(id,key,upGood)=>{const d=jobs.length?cur(key)-y[key]:0;
+    const el=document.getElementById(id);el.textContent=(d>0?'+':'')+d;
+    el.className='k-delta '+(d===0?'flat':(upGood?d>0:d<0)?'good':'bad');};
+  delta('dTotal','total',true);delta('dPending','pending',false);delta('dApproved','approved',true);delta('dBlocked','blocked',false);
+}
+function renderRiskStrip(){
+  const cChecks=jobs.filter(j=>CHECKS.some(k=>j.checks[k]!==true)).length;
+  const cReview=jobs.filter(j=>j.review!=='approved').length;
+  const cLicense=jobs.filter(j=>j.license!=='verified').length;
+  const cParam=jobs.filter(j=>new Date(j.publish)<new Date(j.release)).length;
+  document.getElementById('riskStrip').innerHTML='<b>今日风险命中</b>'+
+    '<span class="risk-chip warn"><i></i>检查项未完成 '+cChecks+'</span>'+
+    '<span class="risk-chip warn"><i></i>人工审核未完成 '+cReview+'</span>'+
+    '<span class="risk-chip danger"><i></i>素材授权待核验 '+cLicense+'</span>'+
+    '<span class="risk-chip danger"><i></i>参数未解禁 '+cParam+'</span>';
+}
+function renderTable(){
+  const v=filtered();
+  document.getElementById('rowCount').textContent='共 '+jobs.length+' 条 · 当前显示 '+v.length+' 条';
+  document.getElementById('rows').innerHTML=v.map(j=>{
+    const is=issues(j),st=stateOf(j);
+    const done=CHECKS.filter(k=>j.checks[k]===true).length,pct=Math.round(done/CHECKS.length*100);
+    const chips=is.slice(0,2).map(x=>'<div class="risk">'+esc(x[0])+'</div>').join('')+(is.length>2?'<div class="risk">+'+(is.length-2)+'</div>':'');
+    return '<tr data-id="'+j.id+'">'+
+      '<td><div class="cm">'+j.id+' · '+LANGS[j.lc]+'</div><div class="cs">'+esc(j.market)+' · '+esc(j.stage)+'</div></td>'+
+      '<td><div class="cm">'+esc(j.platform)+'</div><div class="cs">'+esc(j.form)+'</div></td>'+
+      '<td><div class="cm tnum">'+fmtT(j.publish)+'</div><div class="cs cd">'+j.tzA+' · '+cdTxt(j.publish)+'</div></td>'+
+      '<td>'+revPill(j)+'</td>'+
+      '<td>'+(st==='ready'?'<span class="pill green">可发布</span>':'<span class="pill red">阻止发布</span>')+chips+'</td>'+
+      '<td><div class="cm tnum">'+done+'/'+CHECKS.length+'</div><div class="cprog"><i style="width:'+pct+'%"></i></div></td>'+
+      '<td><div class="ops"><button class="btn sm primary" type="button" data-act="open">处理审核</button><a class="btn sm ghost" href="'+j.video+'" target="_blank" rel="noopener">视频</a></div></td>'+
+    '</tr>';
+  }).join('')||'<tr><td colspan="7"><div class="empty">没有符合筛选条件的任务<button class="btn sm ghost" type="button" data-act="clear">清空筛选</button></div></td></tr>';
+}
+function render(){
+  renderKpis();renderRiskStrip();renderTable();renderCharts();
+}
+
+/* ================= 图表 ================= */
+let echartsInst={d:null,b:null},chartsReady=false;
+function renderChartsFallback(){
+  const a=jobs.filter(j=>j.review==='approved').length,p=jobs.filter(j=>j.review==='pending').length,r=jobs.filter(j=>j.review==='rework').length;
+  const d=document.getElementById('chartDonut');
+  d.innerHTML='<div style="display:flex;flex-direction:column;gap:12px;justify-content:center;height:100%;max-width:360px">'+
+    '<div style="display:flex;height:14px;border-radius:99px;overflow:hidden"><div style="width:'+a+'%;background:#34d399"></div><div style="width:'+p+'%;background:#f5b04c"></div><div style="width:'+r+'%;background:#f47174"></div></div>'+
+    '<div style="font-size:12px;color:#94a4c1">已通过 '+a+' · 待审核 '+p+' · 返工 '+r+'（ECharts 未加载，降级显示）</div></div>';
+  const mk=['美国','英国','德国','墨西哥','马来西亚','泰国'];
+  const b=document.getElementById('chartBars');
+  b.innerHTML='<div style="padding-top:8px">'+mk.map(name=>{
+    const list=jobs.filter(j=>j.market===name);
+    const A=list.filter(j=>j.review==='approved').length,P=list.filter(j=>j.review==='pending').length,Rr=list.filter(j=>j.review==='rework').length;
+    const rate=list.length?Math.round(A/list.length*100):0;
+    return '<div style="margin-bottom:12px"><div style="font-size:12px;color:#c9d6ec;font-weight:600;margin-bottom:4px">'+name+'　'+rate+'%</div>'+
+      '<div style="display:flex;height:12px;border-radius:99px;overflow:hidden">'+
+      '<div style="width:'+A+'%;background:#34d399"></div><div style="width:'+P+'%;background:#f5b04c"></div><div style="width:'+Rr+'%;background:#f47174"></div>'+
+      '</div></div>';
+  }).join('')+'</div>';
+}
+function tryInitCharts(){
+  if(chartsReady) return;
+  if(!window.echarts){renderChartsFallback();return;}
+  chartsReady=true;
+  echartsInst.d=echarts.init(document.getElementById('chartDonut'));
+  echartsInst.b=echarts.init(document.getElementById('chartBars'));
+  let t;
+  window.addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(()=>{echartsInst.d&&echartsInst.d.resize();echartsInst.b&&echartsInst.b.resize();},120);});
+  renderCharts();
+}
+function renderCharts(){
+  const a=jobs.filter(j=>j.review==='approved').length,p=jobs.filter(j=>j.review==='pending').length,r=jobs.filter(j=>j.review==='rework').length;
+  document.getElementById('donutMeta').textContent='已通过 '+a+' · 待审核 '+p+' · 返工 '+r;
+  if(!chartsReady) return;
+  if(echartsInst.d){
+    const el=document.getElementById('chartDonut'),h=(el&&el.clientHeight)||280,R=Math.max(56,h*0.32);
+    echartsInst.d.setOption({
+      tooltip:{trigger:'item',backgroundColor:'#131e33',borderColor:'#2a3a5e',textStyle:{color:'#e8eef9',fontSize:12},formatter:'{b}：{c} 个任务（{d}%）'},
+      series:[{type:'pie',radius:[Math.round(R*0.72),Math.round(R)],center:['30%','50%'],padAngle:3,
+        itemStyle:{borderRadius:8,borderColor:'#0e1626',borderWidth:3},label:{show:false},emphasis:{scaleSize:5},
+        data:[{name:'已通过',value:a,itemStyle:{color:'#34d399'}},{name:'待审核',value:p,itemStyle:{color:'#f5b04c'}},{name:'返工',value:r,itemStyle:{color:'#f47174'}}]}]
+    },true);
+  }
+  if(echartsInst.b){
+    const mk=['美国','英国','德国','墨西哥','马来西亚','泰国'];
+    const rows=mk.map(name=>{const list=jobs.filter(j=>j.market===name);return{name,list,
+      A:list.filter(j=>j.review==='approved').length,
+      P:list.filter(j=>j.review==='pending').length,
+      Rr:list.filter(j=>j.review==='rework').length};});
+    const totMax=Math.max(4,...rows.map(x=>x.list.length));
+    const lab=p2=>p2.value?String(p2.value):'';
+    echartsInst.b.setOption({
+      tooltip:{trigger:'axis',axisPointer:{type:'shadow'},backgroundColor:'#131e33',borderColor:'#2a3a5e',textStyle:{color:'#e8eef9',fontSize:12}},
+      legend:{top:0,right:6,icon:'circle',itemWidth:8,itemHeight:8,textStyle:{color:'#94a4c1',fontSize:12},data:['已通过','待审核','返工']},
+      grid:{left:108,right:18,top:30,bottom:6},
+      xAxis:{type:'value',max:totMax,axisLabel:{color:'#5f6f8f',fontSize:11},splitLine:{lineStyle:{color:'rgba(148,163,193,.08)'}}},
+      yAxis:{type:'category',data:rows.map(x=>x.name+'　'+Math.round(x.A/x.list.length*100)+'%'),axisLine:{show:false},axisTick:{show:false},axisLabel:{color:'#c9d6ec',fontSize:12,fontWeight:600}},
+      series:[
+        {name:'已通过',type:'bar',stack:'t',data:rows.map(x=>x.A),barWidth:14,itemStyle:{color:'#34d399'},label:{show:true,position:'inside',color:'#0e1626',fontSize:11,fontWeight:700,formatter:lab}},
+        {name:'待审核',type:'bar',stack:'t',data:rows.map(x=>x.P),itemStyle:{color:'#f5b04c'},label:{show:true,position:'inside',color:'#0e1626',fontSize:11,fontWeight:700,formatter:lab}},
+        {name:'返工',type:'bar',stack:'t',data:rows.map(x=>x.Rr),itemStyle:{color:'#f47174',borderRadius:[0,4,4,0]},label:{show:true,position:'inside',color:'#0e1626',fontSize:11,fontWeight:700,formatter:lab}}
+      ]
+    },true);
+  }
+}
+
+/* ================= 抽屉 ================= */
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');currentId=null;}
+function openJob(id){
+  currentId=id;
+  document.getElementById('drawer').classList.add('open');
+  renderDrawer(id);
+}
+function renderDrawer(id){
+  const j=jobs.find(x=>x.id===id); if(!j) return;
+  const is=issues(j),st=stateOf(j);
+  document.getElementById('dBody').innerHTML=
+    '<div class="d-title">'+j.id+' · '+LANGS[j.lc]+'版</div>'+
+    '<div class="d-sub">'+esc(j.platform)+' · '+esc(j.market)+' · '+esc(j.stage)+' · '+esc(j.form)+' · 素材 '+j.asset+'</div>'+
+    '<div class="d-pills">'+(st==='ready'?'<span class="pill green">可发布</span>':'<span class="pill red">阻止发布</span>')+' '+revPill(j)+'</div>'+
+    '<div class="d-hint">操作提示：先在下方面板完成人工检查与审核结论，再把发布时间调到解禁之后，点「重算发布准备」查看发布状态变化。</div>'+
+    '<div class="d-sec-h">风险与证据</div>'+
+    (is.map(x=>'<div class="ev"><div class="ev-t">'+esc(x[0])+'</div><div class="ev-d">证据：<span class="mono">'+esc(x[1])+'</span></div></div>').join('')||'<div class="ev ok">已录入字段满足发布准备条件；真实发布仍需人工确认。</div>')+
+    '<div class="d-sec-h">人工检查录入（可编辑）</div>'+
+    CHECKS.map(k=>'<div class="ck"><span>'+k+'</span><select data-k="'+k+'">'+
+      '<option value="null" '+(j.checks[k]===null?'selected':'')+'>未检</option>'+
+      '<option value="true" '+(j.checks[k]===true?'selected':'')+'>通过</option>'+
+      '<option value="false" '+(j.checks[k]===false?'selected':'')+'>失败</option></select></div>').join('')+
+    '<div class="ck"><span>素材授权人工核验<span class="cs">'+j.asset+' · '+esc(j.origin)+'（仅记录证据状态）</span></span>'+
+      '<select data-lic><option value="unknown" '+(j.license==='unknown'?'selected':'')+'>待核验</option><option value="verified" '+(j.license==='verified'?'selected':'')+'>已核验</option></select></div>'+
+    '<div class="ck"><span>人工审核结论</span><select data-rev>'+
+      '<option value="pending" '+(j.review==='pending'?'selected':'')+'>待审核</option>'+
+      '<option value="approved" '+(j.review==='approved'?'selected':'')+'>通过</option>'+
+      '<option value="rework" '+(j.review==='rework'?'selected':'')+'>返工</option></select></div>'+
+    '<div class="ck col"><span>当地发布时间（市场当地时间）<span class="cs">不得早于解禁 '+fmtT(j.release)+'（CEST）</span></span>'+
+      '<input type="datetime-local" data-pub value="'+j.publish.slice(0,16)+'"></div>'+
+    '<div class="d-actions"><button class="btn primary" type="button" data-act="recalc">重算发布准备</button><button class="btn ghost" type="button" data-act="close">关闭</button></div>'+
+    '<p class="d-note">修改仅保存在本页内存；「重置演示数据」可恢复初始状态。</p>';
+}
+
+/* ================= 事件绑定 ================= */
+document.getElementById('rows').addEventListener('click',e=>{
+  const btn=e.target.closest('button');
+  if(!btn) return;
+  const tr=btn.closest('tr'); if(!tr) return;
+  if(btn.dataset.act==='open') openJob(tr.dataset.id);
+  if(btn.dataset.act==='clear'){
+    document.getElementById('fLang').value='all';
+    document.getElementById('fStatus').value='all';
+    document.getElementById('fSearch').value='';
+    renderTable();
+  }
+});
+document.getElementById('drawer').addEventListener('change',e=>{
+  const t=e.target; if(!currentId) return;
+  const j=jobs.find(x=>x.id===currentId); if(!j) return;
+  if(t.dataset.k!==undefined) j.checks[t.dataset.k]=t.value==='null'?null:t.value==='true';
+  if(t.dataset.lic!==undefined) j.license=t.value;
+  if(t.dataset.rev!==undefined) j.review=t.value;
+  if(t.dataset.pub!==undefined) j.publish=t.value+':00'+j.off;
+  render(); renderDrawer(currentId);
+});
+document.getElementById('drawer').addEventListener('click',e=>{
+  const btn=e.target.closest('button'); if(!btn) return;
+  if(btn.dataset.act==='recalc'){render();renderDrawer(currentId);toast('已按最新录入重算发布准备');}
+  if(btn.dataset.act==='close') closeDrawer();
+});
+document.getElementById('fLang').addEventListener('change',renderTable);
+document.getElementById('fStatus').addEventListener('change',renderTable);
+let st;
+document.getElementById('fSearch').addEventListener('input',()=>{clearTimeout(st);st=setTimeout(renderTable,120);});
+document.getElementById('btnReset').addEventListener('click',()=>{jobs=JSON.parse(JSON.stringify(jobs0));render();closeDrawer();toast('已恢复演示数据');});
+document.getElementById('btnExport').addEventListener('click',()=>{
+  const v=filtered();
+  const head=['任务ID','语言','市场','平台','阶段','当地发布时间','审核状态','发布准备','风险','建议动作'];
+  const rows=v.map(j=>[j.id,LANGS[j.lc],j.market,j.platform,j.stage,fmtT(j.publish),j.review,stateOf(j),issues(j).map(x=>x[0]).join('；'),stateOf(j)==='blocked'?'补审 / 核验授权 / 调整发布时间':'保持人工复核']);
+  const csv='\ufeff'+[head,...rows].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='修改单-'+stamp()+'.csv';a.click();
+  toast('已导出 '+v.length+' 条修改单');
+});
+document.getElementById('btnQuick').addEventListener('click',()=>openJob('J2'));
+document.getElementById('dClose').addEventListener('click',closeDrawer);
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeDrawer();});
+
+/* ================= 动效与初始化 ================= */
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const cio=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){tryInitCharts();cio.disconnect();}}),{threshold:.05});
+cio.observe(document.getElementById('pDonut'));
+window.addEventListener('load',()=>setTimeout(tryInitCharts,60));
+setTimeout(tryInitCharts,1500);
+render();
+</script>
+<script src="../../../assets/motion.js"></script></body>
+</html>
