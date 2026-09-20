@@ -95,14 +95,22 @@ html.motion .image-item:hover{transform:translateY(-3px);border-color:#667458;bo
   .honor-badge{width:auto;align-self:flex-start}
 }
 
-.timeline,.honor-list{max-width:880px}
-.ch-section{margin-bottom:52px}
-.ch-section .section-heading{margin-bottom:26px}
 
-.ch-hero{margin:4px 0 42px;border-radius:14px;overflow:hidden;position:relative;border:1px solid var(--line);height:300px}
-.ch-hero img{width:100%;height:100%;object-fit:cover;object-position:center 42%}
-.ch-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0b0f0d26 0%,transparent 38%,transparent 55%,#0b0f0dd9 100%);pointer-events:none}
-.ch-hero .cap{position:absolute;left:24px;bottom:18px;color:#e9eedd;font-size:12px;letter-spacing:.14em;z-index:1;text-shadow:0 1px 8px #000a}
+/* ===== 校园与荣誉 v2：窄横幅、双列荣誉墙、内容居中 ===== */
+.ch-wrap{max-width:980px;margin:0 auto}
+.ch-hero{margin:6px 0 34px;border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--line);height:150px}
+.ch-hero img{width:100%;height:100%;object-fit:cover;object-position:center 45%}
+.ch-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0b0f0d1f 0%,transparent 45%,#0b0f0dc2 100%);pointer-events:none}
+.ch-hero .cap{position:absolute;left:20px;bottom:13px;color:#e9eedd;font-size:11px;letter-spacing:.14em;z-index:1;text-shadow:0 1px 8px #000a}
 html.motion .ch-hero img{transition:transform .9s cubic-bezier(.2,.6,.2,1)}
 html.motion .ch-hero:hover img{transform:scale(1.04)}
-@media(max-width:700px){.ch-hero{height:200px}}
+.ch-section{margin-bottom:46px}
+.ch-section .section-heading{margin-bottom:24px}
+.stat-row{grid-template-columns:repeat(3,1fr)}
+.timeline{max-width:880px}
+.honor-list{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;border-top:1px solid var(--line)}
+.honor-row{padding:13px 2px}
+@media(max-width:700px){
+  .ch-hero{height:110px}
+  .honor-list{grid-template-columns:1fr;gap:0}
+}
